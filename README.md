@@ -1,6 +1,6 @@
 # UniSeek Frontend
 
-UniSeek is a web application designed to help fresh high school graduates in Cambodia choose the right university major. The frontend is built using **React** with **TypeScript**.
+UniSeek is a web application designed to help fresh high school graduates in Cambodia choose the right university. The frontend is built using **React** with **TypeScript**.
 
 ## Features
 
