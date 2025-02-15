@@ -1,18 +1,7 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import IndexRoute from "../src/Route/IndexRoute";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className='text-red-600'>
-          Welcome to UniSeek
-        </p>
-      </header>
-    </div>
-  );
+    return <IndexRoute />;
 }
 
 export default App;
