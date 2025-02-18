@@ -4,13 +4,9 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className='text-red-600'>
-          Welcome to UniSeek
-        </p>
-      </header>
+    <div className='text-myprimary'>
+      <h1>Hello, World!</h1>
+      <p>This text inherits global styles.</p>
     </div>
   );
 }
