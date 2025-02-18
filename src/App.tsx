@@ -1,13 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Routers from './router';
 
 function App() {
   return (
-    <div className='text-myprimary'>
-      <h1>Hello, World!</h1>
-      <p>This text inherits global styles.</p>
-    </div>
+    <Routers></Routers>
   );
 }
 
