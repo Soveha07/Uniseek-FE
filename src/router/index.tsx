@@ -10,11 +10,12 @@ const Routers: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/home" element={<Home />} />
         {/* ----Public Routes---- */}
         <Route path="/" element={<PublicRoute><Onboard /></PublicRoute>} />
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/signup" element={<PublicRoute><SignUp /></PublicRoute>} />
-        <Route path="/home" element={<PublicRoute><Home /></PublicRoute>} />
+        {/* <Route path="/home" element={<PublicRoute><Home /></PublicRoute>} /> */}
         {/* ----End---- */}
 
         {/* ----Protected Routes---- */}
