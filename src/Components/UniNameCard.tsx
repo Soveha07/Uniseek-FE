@@ -1,24 +1,24 @@
 import React from "react";
 
-interface UniNameCardProps {
-    name: string;
-    type: string;
-    logoUrl: string;
+interface UniversityInfoProps {
+  name: string;
+  type: string;
+  unilogo: string;  // New prop for the logo
 }
 
-const UniversityNameCard: React.FC<UniNameCardProps> = ({name, type, logoUrl}) => {
-    return (
-        <div className= "bg-myskyblue rounded-lg shadow-md overflow-hidden mb-6 flex">
-            <img src = {logoUrl} alt = {name} className = "w-1/3 object-cover" />
-            <div className= "p-6 w-2/3">
-              <h3 className = "font-bold text-md">{name}</h3>
-              <ul className="text-b2">
-              </ul>
-              <button className = "mt-2 bg-myprimary text-white text-b2 px-4 py-2 rounded"></button>
-
-            </div>
-        </div>
-    );
+const UniNameCard: React.FC<UniversityInfoProps> = ({ name, type, unilogo }) => {
+  return (
+    <div className="mt-4 p-4 bg-myskyblue rounded-lg flex items-center">
+      <img src={unilogo} alt={`${name} logo`} className="h-20 w-20 rounded-full mb-2" />
+      <div className = "ml-2 bg-myskyblue flex-col">
+      <h2 className="text-b1 bg-myskyblue font-bold">{name}</h2>
+      <span className="bg-myprimary text-white text-b3 px-2 py-1 rounded-md">
+        {type}
+      </span>
+    </div>
+    </div>
+    
+  );
 };
 
-export default UniversityNameCard;
+export default UniNameCard;
