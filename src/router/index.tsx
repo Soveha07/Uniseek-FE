@@ -6,6 +6,9 @@ import Login from "../pages/onboarding/Login";
 import SignUp from "../pages/onboarding/Signup";
 import PublicRoute from "../services/auth/PublicRoute";
 import ProtectedRoute from "../services/auth/ProtectedRoute";
+import UniversityList from "../pages/uni/Uni-List";
+import MentorList from "../pages/mentor/Mentor-List";
+import MentorDetail from "../pages/mentor/MentorDetail";
 const Routers: React.FC = () => {
   return (
     <BrowserRouter>
@@ -18,6 +21,10 @@ const Routers: React.FC = () => {
         {/* <Route path="/home" element={<PublicRoute><Home /></PublicRoute>} /> */}
         {/* ----End---- */}
 
+        {/* University Listing */}
+        <Route path="/universities" element={<PublicRoute><UniversityList /></PublicRoute>} />
+        <Route path="/mentors" element={<MentorList />} />
+        <Route path="/mentors-detail" element={<MentorDetail />} />
         {/* ----Protected Routes---- */}
         {/* <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} /> */}
         {/* ----End---- */}
