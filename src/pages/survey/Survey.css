@@ -1,0 +1,133 @@
+/* Container */
+.survey-container {
+max-width: 600px;
+margin: 0 auto;
+padding: 16px;
+font-family: Arial, sans-serif;
+}
+
+/* Header */
+.survey-header {
+text-align: center;
+margin-bottom: 24px;
+}
+
+/* Progress Bar */
+.survey-progress-bar {
+background-color: #eee;
+border-radius: 8px;
+height: 8px;
+margin: 16px 0;
+overflow: hidden;
+}
+
+.survey-progress-bar-fill {
+height: 100%;
+background-color: #4caf50;
+transition: width 0.3s ease;
+}
+
+/* Content */
+.survey-content h2 {
+margin-bottom: 8px;
+}
+
+.survey-content p {
+margin-bottom: 16px;
+}
+
+/* Choices List */
+.survey-choices {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+.choice-item {
+padding: 12px;
+margin-bottom: 8px;
+border: 1px solid #ccc;
+border-radius: 6px;
+cursor: pointer;
+transition: background-color 0.2s ease;
+}
+
+.choice-item:hover {
+background-color: #f7f7f7;
+}
+
+.choice-item.selected {
+background-color: #d0e6ff;
+border-color: #4caf50;
+}
+
+/* Navigation Buttons */
+.survey-navigation {
+display: flex;
+justify-content: space-between;
+margin-top: 24px;
+}
+
+.btn-back,
+.btn-next {
+padding: 10px 10px;
+font-size: 14px;
+cursor: pointer;
+border: none;
+border-radius: 5px;
+}
+
+.btn-back:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
+
+.btn-next {
+background-color: #4caf50;
+color: #fff;
+}
+
+/* Ensure main content does not extend behind the fixed footer */
+.survey-content {
+margin-bottom: 140px; /* Adjust as needed */
+}
+
+/* Fixed footer container */
+.survey-footer {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+background: #fff;
+box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 10px 0;
+}
+
+/* Process bar container to ensure it is visible */
+.process-bar-container {
+width: 90%;    /* Adjust width as needed */
+margin-bottom: 10px;
+}
+
+/* Navigation container with horizontal padding */
+.survey-navigation {
+width: 100%;
+display: flex;
+justify-content: flex-end; /* aligns the Next/Finish button to the right */
+padding: 0 20px;
+}
+
+/* Back button pushed to left */
+.btn-back {
+margin-left: 20px;
+margin-right: auto; /* pushes Back button to the left */
+}
+
+/* Next/Finish button spacing from the right */
+.btn-next {
+margin-right: 20px; /* adjust spacing as needed */
+}
+  

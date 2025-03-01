@@ -5,6 +5,7 @@ import Onboard from "../pages/onboarding/Onboard";
 import Login from "../pages/onboarding/Login";
 import SignUp from "../pages/onboarding/Signup";
 import PublicRoute from "../services/auth/PublicRoute";
+import Survey from "../pages/survey/Survey";
 import ProtectedRoute from "../services/auth/ProtectedRoute";
 import NavBar from "../layouts/navbar";
 import { Outlet } from "react-router-dom";
@@ -23,10 +24,12 @@ const Routers: React.FC = () => {
         <Route element={<Layout />}>
           <Route path="/home" element={<Home />} />
         </Route>
+        <Route path="/survey" element={<PublicRoute><Survey /></PublicRoute>} />
         {/* ----Public Routes---- */}
         <Route path="/" element={<PublicRoute><Onboard /></PublicRoute>} />
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/signup" element={<PublicRoute><SignUp /></PublicRoute>} />
+        
         {/* <Route path="/home" element={<PublicRoute><Home /></PublicRoute>} /> */}
         {/* ----End---- */}
 
