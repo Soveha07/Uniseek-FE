@@ -8,7 +8,7 @@ const UniDetailpage = () => {
     <div className="">
       <Header title="University Details" />
       <div className="min-h-screen mt-16 relative">
-        {/* University Image */}
+       
         <div className="relative w-full h-64 md:h-96 lg:h-96 bg-mysecondary">
           <img
             src="/Assets/UniPics/itc1.png"
@@ -16,8 +16,8 @@ const UniDetailpage = () => {
             className="w-full h-full object-cover"
           />
 
-          {/* University Info (Overlapping Card) */}
-          <div className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3">
+          
+          <div className="absolute bottom-1 rounded-lg bg-myskyblue left-1/2 transform -translate-x-1/2 translate-y-1/2 w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3">
             <UniNameCard
               name="Institute of Technology of Cambodia"
               type="Public School"
