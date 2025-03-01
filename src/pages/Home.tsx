@@ -5,7 +5,7 @@ import SmallBox from "../components/homepage/SmallBox";
 
 const Home: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     alert(`Searching for: ${searchTerm}`);
@@ -46,7 +46,7 @@ const Home: React.FC = () => {
           imgPath="/homepage/uni.jpeg"
           buttonText="Explore"
           onClick={() => alert("")}
-         
+
         />
         <Box
           title="University Ranking by Subject 2025"
@@ -77,12 +77,12 @@ const Home: React.FC = () => {
           />
         </div>
 
-        <ol className="relative hidden sm:block border-l border-gray-200 dark:border-gray-700 flex-col h-full py-10">
+        <ol className="relative hidden sm:block border-l border-gray-700 flex-col h-full py-10">
           <li className="relative mb-96">
-            <div className="absolute w-3 h-3 rounded-full -left-1.5 border border-white dark:bg-myprimary"></div>
+            <div className="absolute w-3 h-3 rounded-full -left-1.5 bg-myprimary"></div>
           </li>
           <li className="relative">
-            <div className="absolute w-3 h-3 rounded-full -left-1.5 border border-white dark:bg-myprimary"></div>
+            <div className="absolute w-3 h-3 rounded-full -left-1.5 border bg-myprimary"></div>
           </li>
         </ol>
 

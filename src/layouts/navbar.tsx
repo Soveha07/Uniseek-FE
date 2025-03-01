@@ -39,7 +39,7 @@ const NavBar: React.FC = () => {
             { name: "About Us", path: "/about" },
           ].map(({ name, path }, index) => (
             <li key={index}>
-              <Link to={path} className="block py-2 px-4 text-gray-900 rounded-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-300 dark:hover:text-white">
+              <Link to={path} className="block py-2 px-4 text-gray-900 rounded-sm hover:bg-blue-200 dark:text-gray-400 dark:hover:bg-gray-300 dark:hover:text-white bg-blue-50">
                 {name}
               </Link>
             </li>
