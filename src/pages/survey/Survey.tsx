@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import ProcessBar from './ProcessBar';
 import { questions } from './QueAns';
 import './Survey.css';
+import { submitSurvey } from '../../services/survey/surveyService';
+import Loading from '../../components/common/Loading';
 
 type AnswerValue = string | string[] | null;
 interface Answers {
@@ -9,8 +11,8 @@ interface Answers {
 }
 
 const Survey: React.FC = () => {
+  const userUID = localStorage.getItem("userID");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-
   const [answers, setAnswers] = useState<Answers>(() => {
     const initial: Answers = {};
     questions.forEach(q => {
@@ -18,6 +20,8 @@ const Survey: React.FC = () => {
     });
     return initial;
   });
+
+  const [loading, setLoading] = useState<boolean>(false); // Loading state for submission
 
   const currentQuestion = questions[currentQuestionIndex];
   const selectedAnswer = answers[currentQuestion.id];
@@ -27,7 +31,8 @@ const Survey: React.FC = () => {
     if (currentQuestion.selectionType === 'multiple') {
       setAnswers(prev => {
         const currentSelections = (prev[questionId] as string[]) || [];
-        let updatedSelections: string[];
+        let updatedSelections: string[] = [];
+
         if (currentSelections.includes(choice)) {
           updatedSelections = currentSelections.filter(item => item !== choice);
         } else {
@@ -47,7 +52,7 @@ const Survey: React.FC = () => {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentQuestion.selectionType === 'multiple') {
       const selections = (answers[currentQuestion.id] as string[]) || [];
       if (currentQuestion.minSelections && selections.length < currentQuestion.minSelections) {
@@ -56,7 +61,7 @@ const Survey: React.FC = () => {
       }
     } else {
       if (!answers[currentQuestion.id]) {
-        alert("Please select an option before proceeding.");
+        alert('Please select an option before proceeding.');
         return;
       }
     }
@@ -64,8 +69,31 @@ const Survey: React.FC = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
-      alert('Survey completed! Check console for payload.');
-      console.log('Survey Answers Payload:', answers);
+      try {
+        setLoading(true);
+        const payload = {
+          studyTrack: answers[1], // Adjust IDs according to your data
+          strongestSubjects: answers[2],
+          extraCourse: answers[3],
+          futureCareer: answers[4],
+          budget: answers[5],
+          scholarships: answers[6],
+          exchangeProgram: answers[7],
+          facilities: answers[8],
+          shift: answers[9],
+          classSize: answers[10],
+          studentId: userUID,
+        };
+
+        console.log('Submitting survey with payload:', payload);
+        await submitSurvey(payload);
+        alert('Survey submitted successfully!');
+      } catch (error) {
+        alert('Failed to submit survey. Please try again.');
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -76,6 +104,15 @@ const Survey: React.FC = () => {
   };
 
   const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+
+
+  if (loading) {
+    return (
+      <div>
+        <Loading></Loading>
+      </div>
+    )
+  }
 
   return (
     <div className="survey-container">
@@ -90,15 +127,14 @@ const Survey: React.FC = () => {
           {currentQuestion.choices.map((choice, index) => (
             <li
               key={index}
-              className={`choice-item ${
-                currentQuestion.selectionType === 'multiple'
-                  ? ((selectedAnswer as string[]) || []).includes(choice)
-                    ? 'selected'
-                    : ''
-                  : selectedAnswer === choice
+              className={`choice-item ${currentQuestion.selectionType === 'multiple'
+                ? ((selectedAnswer as string[]) || []).includes(choice)
                   ? 'selected'
                   : ''
-              }`}
+                : selectedAnswer === choice
+                  ? 'selected'
+                  : ''
+                }`}
               onClick={() => handleChoiceSelect(choice)}
             >
               {choice}
