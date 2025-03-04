@@ -9,6 +9,7 @@ import Survey from "../pages/survey/Survey";
 import ProtectedRoute from "../services/auth/ProtectedRoute";
 import NavBar from "../layouts/navbar";
 import { Outlet } from "react-router-dom";
+import UniversityRecommendation from "../pages/survey/UniRecommenation";
 
 const Layout: React.FC = () => (
   <>
@@ -24,6 +25,8 @@ const Routers: React.FC = () => {
         {/* ----With Layout---- */}
         <Route element={<Layout />}>
           <Route path="/home" element={<Home />} />
+          <Route path="/recommendation" element={<UniversityRecommendation />} />
+          <Route path="/survey" element={<ProtectedRoute><Survey /></ProtectedRoute>} />
         </Route>
 
         {/* ----Public Routes---- */}
@@ -35,7 +38,7 @@ const Routers: React.FC = () => {
         {/* ----End---- */}
 
         {/* ----Protected Routes---- */}
-        <Route path="/survey" element={<ProtectedRoute><Survey /></ProtectedRoute>} />
+
         {/* ----End---- */}
       </Routes>
     </Router>

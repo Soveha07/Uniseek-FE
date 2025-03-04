@@ -4,6 +4,8 @@ import { questions } from './QueAns';
 import './Survey.css';
 import { submitSurvey } from '../../services/survey/surveyService';
 import Loading from '../../components/common/Loading';
+import { useNavigate } from 'react-router-dom';
+import { University } from '../../interfaces/university.interface';
 
 type AnswerValue = string | string[] | null;
 interface Answers {
@@ -11,6 +13,8 @@ interface Answers {
 }
 
 const Survey: React.FC = () => {
+  const navigate = useNavigate();
+  const [apiResponse, setApiResponse] = useState<University[]>();
   const userUID = localStorage.getItem("userID");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [answers, setAnswers] = useState<Answers>(() => {
@@ -86,8 +90,10 @@ const Survey: React.FC = () => {
         };
 
         console.log('Submitting survey with payload:', payload);
-        await submitSurvey(payload);
+        const response = await submitSurvey(payload);
+        setApiResponse(response);
         alert('Survey submitted successfully!');
+        navigate('/recommendation', { state: { universities: response } });
       } catch (error) {
         alert('Failed to submit survey. Please try again.');
         console.log(error);

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import Button from "../components/homepage/Button";
 import Box from "../components/homepage/Box";
 import SmallBox from "../components/homepage/SmallBox";
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,8 +100,8 @@ const Home: React.FC = () => {
       </div>
 
       <div className="flex flex-col items-center text-center max-w-lg mx-auto px-4 mt-20">
-        <p className="font-bold mb-4">Want to meet university representatives to learn more about their experience?</p>
-        <Button className="bg-myprimary text-white font-bold rounded-full w-96 h-14 mb-9" text="Let's Get Started" />
+        <p className="font-bold mb-4">Not sure which university is the right fit for you? Take our quick survey to discover your perfect match!</p>
+        <Button className="bg-myprimary text-white font-bold rounded-full w-96 h-14 mb-9" text="Let's Get Started" onClick={() => navigate('/survey')} />
       </div>
     </>
   );
