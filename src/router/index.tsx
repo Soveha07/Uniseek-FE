@@ -7,6 +7,7 @@ import SignUp from "../pages/onboarding/Signup";
 import PublicRoute from "../services/auth/PublicRoute";
 import ProtectedRoute from "../services/auth/ProtectedRoute";
 import UniversityList from "../pages/uni/Uni-List";
+import UniversityDetail from "../pages/uni/Uni-Detail";
 import MentorList from "../pages/mentor/Mentor-List";
 import MentorDetail from "../pages/mentor/MentorDetail";
 const Routers: React.FC = () => {
@@ -23,8 +24,9 @@ const Routers: React.FC = () => {
 
         {/* University Listing */}
         <Route path="/universities" element={<PublicRoute><UniversityList /></PublicRoute>} />
+        <Route path="/universities/detail/:id" element={<PublicRoute><UniversityDetail /></PublicRoute>} />
         <Route path="/mentors" element={<MentorList />} />
-        <Route path="/mentors-detail" element={<MentorDetail />} />
+        <Route path="/mentors/detail" element={<MentorDetail />} />
         {/* ----Protected Routes---- */}
         {/* <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} /> */}
         {/* ----End---- */}
