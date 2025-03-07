@@ -120,6 +120,7 @@ const UniversityDetail: React.FC = () => {
 
           <UniversityAdditionalInfo 
             facility={university.facility}
+            universityMajors={university.universityMajors || []}
           />
         </div>
         

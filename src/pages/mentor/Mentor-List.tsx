@@ -3,17 +3,13 @@ import Header from "../../components/common/Header";
 import MentorListLayout from "../../layouts/mentor/MentorListLayout";
 import Pagination from "../../components/common/Pagination";
 import { useNavigate } from "react-router-dom";
+import { getMentors, Mentor } from "../../api/mentor/GetMentors";
 
-const mentorsData = [
-    { name: "John Doe", university: "Harvard University", major: "Computer Science", imageUrl: "/Assets/mentors/john.png" },
-    { name: "Jane Smith", university: "MIT", major: "Electrical Engineering", imageUrl: "/Assets/mentors/jane.png" },
-    { name: "Alice Johnson", university: "Stanford University", major: "Business Administration", imageUrl: "/Assets/mentors/alice.png" },
-    { name: "Bob Williams", university: "Oxford University", major: "Psychology", imageUrl: "/Assets/mentors/bob.png" },
-    { name: "Ella Garcia", university: "Stanford University", major: "Medicine", imageUrl: "/Assets/mentors/alice.png" },
-    { name: "Michael Chen", university: "Oxford University", major: "Physics", imageUrl: "/Assets/mentors/bob.png" },
-    { name: "Sarah Lee", university: "Harvard University", major: "Biology", imageUrl: "/Assets/mentors/john.png" },
-    { name: "David Kim", university: "MIT", major: "Mathematics", imageUrl: "/Assets/mentors/jane.png" },
-    // Add more mentors as needed
+// Fallback data in case API fails
+const fallbackMentors = [
+    { id: 1, name: "John Doe", university: "Harvard University", major: "Computer Science", imageUrl: "/Assets/mentors/john.png" },
+    { id: 2, name: "Jane Smith", university: "MIT", major: "Electrical Engineering", imageUrl: "/Assets/mentors/jane.png" },
+    // Add more as needed...
 ];
 
 const MentorList: React.FC = () => {
@@ -22,7 +18,10 @@ const MentorList: React.FC = () => {
     const [mentorsPerPage, setMentorsPerPage] = useState(() => 
         window.innerWidth >= 768 ? 8 : 4
     );
-    const totalMentors = mentorsData.length;
+    const [mentors, setMentors] = useState<Mentor[]>([]);
+    const [totalMentors, setTotalMentors] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     // Update mentors per page on window resize
     useEffect(() => {
@@ -34,9 +33,35 @@ const MentorList: React.FC = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const indexOfLastMentor = currentPage * mentorsPerPage;
-    const indexOfFirstMentor = indexOfLastMentor - mentorsPerPage;
-    const currentMentors = mentorsData.slice(indexOfFirstMentor, indexOfLastMentor);
+    // Fetch mentors when page or mentorsPerPage changes
+    useEffect(() => {
+        const fetchMentors = async () => {
+            setLoading(true);
+            try {
+                const result = await getMentors(currentPage, mentorsPerPage);
+                if (result.mentors.length > 0) {
+                    setMentors(result.mentors);
+                    setTotalMentors(result.total);
+                    setError(null);
+                } else {
+                    // If no mentors returned, use fallback data
+                    console.log('No mentors returned from API, using fallback data');
+                    setMentors(fallbackMentors);
+                    setTotalMentors(fallbackMentors.length);
+                }
+            } catch (err) {
+                console.error('Error fetching mentors:', err);
+                setError('Failed to load mentors. Please try again later.');
+                // Use fallback data on error
+                setMentors(fallbackMentors);
+                setTotalMentors(fallbackMentors.length);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchMentors();
+    }, [currentPage, mentorsPerPage]);
 
     const handleBackHome = () => {
         navigate('/');
@@ -56,31 +81,45 @@ const MentorList: React.FC = () => {
                         Find a Mentor to Guide You!
                     </h2>
                     
-                    {/* For mobile view */}
-                    <div className="md:hidden">
-                        <MentorListLayout 
-                            mentors={currentMentors} 
-                            view="mobile" 
-                        />
-                    </div>
-                    
-                    {/* For desktop/tablet view */}
-                    <div className="hidden md:block">
-                        <MentorListLayout 
-                            mentors={currentMentors} 
-                            view="desktop" 
-                        />
-                    </div>
+                    {loading ? (
+                        <div className="w-full flex justify-center items-center py-12">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                        </div>
+                    ) : error ? (
+                        <div className="w-full bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded relative mb-6">
+                            <span className="block sm:inline">{error}</span>
+                        </div>
+                    ) : (
+                        <>
+                            {/* For mobile view */}
+                            <div className="md:hidden">
+                                <MentorListLayout 
+                                    mentors={mentors} 
+                                    view="mobile" 
+                                />
+                            </div>
+                            
+                            {/* For desktop/tablet view */}
+                            <div className="hidden md:block">
+                                <MentorListLayout 
+                                    mentors={mentors} 
+                                    view="desktop" 
+                                />
+                            </div>
+                        </>
+                    )}
                     
                     {/* Pagination */}
-                    <div className="w-full flex justify-center mt-6">
-                        <Pagination 
-                            total={totalMentors} 
-                            perPage={mentorsPerPage} 
-                            currentPage={currentPage} 
-                            onChange={setCurrentPage} 
-                        />
-                    </div>
+                    {!loading && !error && (
+                        <div className="w-full flex justify-center mt-6">
+                            <Pagination 
+                                total={totalMentors} 
+                                perPage={mentorsPerPage} 
+                                currentPage={currentPage} 
+                                onChange={setCurrentPage} 
+                            />
+                        </div>
+                    )}
                     
                     <div className="w-full flex justify-center mt-6 mb-10">
                         <button 
