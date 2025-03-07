@@ -1,20 +1,17 @@
-import React from "react";
-import MentorDetailHeader from "../../pages/mentor/components/MentorDetailHeader";
-import AboutSection from "../../pages/mentor/components/AboutSection";
-import SocialLinks from "../../pages/mentor/components/SocialLinks";
-import RatingSection from "../../pages/mentor/components/RatingSection";
-import ScheduleSection from "../../pages/mentor/components/ScheduleSection";
-import BookButton from "../../pages/mentor/components/BookButton";
+import React, { ReactNode } from 'react';
+import Header from '../../components/common/Header';
 
-const MentorDetailLayout: React.FC = () => {
+interface MentorDetailLayoutProps {
+  children: ReactNode;
+}
+
+const MentorDetailLayout: React.FC<MentorDetailLayoutProps> = ({ children }) => {
   return (
-    <div className="flex flex-col items-center gap-6">
-      <MentorDetailHeader />
-      <AboutSection />
-      <SocialLinks />
-      <RatingSection />
-      <ScheduleSection />
-      <BookButton />
+    <div className="bg-gradient-to-b from-sky-50 to-blue-100 min-h-screen">
+      <div className="container mx-auto py-6 px-4 md:px-6 lg:max-w-none lg:px-8">
+        <Header />
+        {children}
+      </div>
     </div>
   );
 };
