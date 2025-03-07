@@ -45,5 +45,5 @@ const MentorCard: React.FC<MentorCardProps> = ({ id, name, university, major, im
     </div>
   );
 };
-
+// cool
 export default MentorCard;
