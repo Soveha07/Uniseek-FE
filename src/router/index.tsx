@@ -10,6 +10,9 @@ import ProtectedRoute from "../services/auth/ProtectedRoute";
 import NavBar from "../layouts/navbar";
 import { Outlet } from "react-router-dom";
 import UniversityRecommendation from "../pages/survey/UniRecommenation";
+import UserProfile from "../pages/userProfile/UserProfile";
+import UserEditProfile from "../pages/userProfile/UserResetPw";
+import UserResetPw from "../pages/userProfile/UserResetPw";
 
 const Layout: React.FC = () => (
   <>
@@ -25,6 +28,8 @@ const Routers: React.FC = () => {
         {/* ----With Layout---- */}
         <Route element={<Layout />}>
           <Route path="/home" element={<Home />} />
+          <Route path="/userprofile" element={<UserProfile/>}></Route>
+          <Route path="/userresetpw" element={<UserResetPw/>}></Route>
           <Route path="/recommendation" element={<UniversityRecommendation />} />
           <Route path="/survey" element={<ProtectedRoute><Survey /></ProtectedRoute>} />
         </Route>
