@@ -10,6 +10,10 @@ import ProtectedRoute from "../services/auth/ProtectedRoute";
 import NavBar from "../layouts/navbar";
 import { Outlet } from "react-router-dom";
 import UniversityRecommendation from "../pages/survey/UniRecommenation";
+import UniversityList from "../pages/uni/Uni-List";
+import UniversityDetail from "../pages/uni/Uni-Detail";
+import MentorList from "../pages/mentor/Mentor-List";
+import MentorDetail from "../pages/mentor/MentorDetail";
 
 const Layout: React.FC = () => (
   <>
@@ -37,6 +41,11 @@ const Routers: React.FC = () => {
         {/* <Route path="/home" element={<PublicRoute><Home /></PublicRoute>} /> */}
         {/* ----End---- */}
 
+        {/* University Listing */}
+        <Route path="/universities" element={<PublicRoute><UniversityList /></PublicRoute>} />
+        <Route path="/universities/detail/:id" element={<PublicRoute><UniversityDetail /></PublicRoute>} />
+        <Route path="/mentors" element={<MentorList />} />
+        <Route path="/mentors/detail" element={<MentorDetail />} />
         {/* ----Protected Routes---- */}
 
         {/* ----End---- */}
