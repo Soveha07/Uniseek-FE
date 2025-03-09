@@ -77,10 +77,8 @@ export const getUniversityById = async (id: number): Promise<University | null> 
   }
 };
 
-export const formatPriceRange = (min?: number, max?: number): string => {
-  const validMin = typeof min === 'number' ? min : 0;
-  const validMax = typeof max === 'number' ? max : 0;
-  return `$${validMin.toLocaleString()} - $${validMax.toLocaleString()}`;
+export const formatPriceRange = (min: number, max: number): string => {
+  return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
 };
 
 // Helper function
