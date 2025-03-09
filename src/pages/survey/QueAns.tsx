@@ -5,11 +5,16 @@ export interface Question {
   id: number;
   question: string;
   subQuestion: string;
-  choices: string[];
+  choices: string[] | Choice[];
   selectionType: 'single' | 'multiple';
   minSelections?: number;
   maxSelections?: number;
 }
+
+type Choice = {
+  label: string;
+  value: string;
+};
 
 // Payload type for storing answers
 export interface AnswerPayload {
@@ -101,11 +106,9 @@ export const questions: Question[] = [
     question: '2. University Factors',
     subQuestion: 'How important are scholarships in your university choice?',
     choices: [
-      'So much',
-      'Much',
-      'Neutral',
-      'Not much',
-      'No'
+      { label: 'High', value: 'high' },
+      { label: 'Medium', value: 'medium' },
+      { label: 'Low', value: 'low' },
     ],
     selectionType: 'single',
     minSelections: 1,
@@ -115,11 +118,9 @@ export const questions: Question[] = [
     question: '2. University Factors',
     subQuestion: 'How important is the availability of exchange programs in your university choice?',
     choices: [
-      'So much',
-      'Much',
-      'Neutral',
-      'Not much',
-      'No'
+      { label: 'High', value: 'high' },
+      { label: 'Medium', value: 'medium' },
+      { label: 'Low', value: 'low' },
     ],
     selectionType: 'single',
     minSelections: 1,
@@ -129,11 +130,9 @@ export const questions: Question[] = [
     question: '2. University Factors',
     subQuestion: 'Does the quality of facilities (e.g., cleanliness of toilets) matter in your university choice?',
     choices: [
-      'So much',
-      'Much',
-      'Neutral',
-      'Not much',
-      'No'
+      { label: 'High', value: 'high' },
+      { label: 'Medium', value: 'medium' },
+      { label: 'Low', value: 'low' },
     ],
     selectionType: 'single',
     minSelections: 1,
@@ -143,9 +142,9 @@ export const questions: Question[] = [
     question: '2. University Factors',
     subQuestion: 'How many hours do you aim to study with lecturers at university?',
     choices: [
-      'Only a shift 3 or 4 hours',
-      'Full-time 8 hours',
-      'Flexibility of timetable'
+      { label: 'One shift only', value: 'one_shift' },
+      { label: 'Full time', value: 'full_time' },
+      { label: 'Flexible', value: 'flexible' },
     ],
     selectionType: 'single',
     minSelections: 1,
@@ -155,8 +154,8 @@ export const questions: Question[] = [
     question: '2. University Factors',
     subQuestion: 'What class size do you prefer at university?',
     choices: [
-      'Small class',
-      'Flexible class (Depend on the study course)'
+      { label: 'Small', value: 'small' },
+      { label: 'Flexible (Depend on the study course)', value: 'flexible' },
     ],
     selectionType: 'single',
     minSelections: 1,

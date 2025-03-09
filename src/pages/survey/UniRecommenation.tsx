@@ -8,17 +8,21 @@ const UniversityRecommendation: React.FC = () => {
         <div>
             <h1>University List</h1>
             <ul>
-                {universities.map((uni: any) => (
-                    <li key={uni.id}>
-                        <h2>{uni.name}</h2>
-                        <p>{uni.description}</p>
-                        <p>Location: {uni.location}</p>
-                        <p>Scholarships: {uni.scholarship}</p>
-                    </li>
-                ))}
+                {universities.map((uniObj: any) => {
+                    const uni = uniObj.university; // Extract `university` from object
+                    return (
+                        <li key={uni.id}>
+                            <h2>{uni.name}</h2>
+                            <p>{uni.description}</p>
+                            <p>Location: {uni.location}</p>
+                            <p>Scholarships: {uni.scholarship}</p>
+                        </li>
+                    );
+                })}
             </ul>
         </div>
     );
 };
 
 export default UniversityRecommendation;
+

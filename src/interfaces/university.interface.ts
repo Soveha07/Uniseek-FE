@@ -1,3 +1,9 @@
+// university.interface.ts
+export interface CareerField {
+    id: number;
+    name: string;
+}
+
 export interface University {
     id: number;
     name: string;
@@ -14,5 +20,6 @@ export interface University {
     shift?: string;
     createdAt?: string;
     photoUrl?: string | null;
+    universityCareerfields: CareerField[];
     score?: number;
 }

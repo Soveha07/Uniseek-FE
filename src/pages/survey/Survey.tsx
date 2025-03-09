@@ -93,6 +93,7 @@ const Survey: React.FC = () => {
         const response = await submitSurvey(payload);
         setApiResponse(response);
         alert('Survey submitted successfully!');
+        console.log("Navigating with universities:", response);
         navigate('/recommendation', { state: { universities: response } });
       } catch (error) {
         alert('Failed to submit survey. Please try again.');
@@ -130,23 +131,29 @@ const Survey: React.FC = () => {
         <h2>{currentQuestion.question}</h2>
         <p>{currentQuestion.subQuestion}</p>
         <ul className="survey-choices">
-          {currentQuestion.choices.map((choice, index) => (
-            <li
-              key={index}
-              className={`choice-item ${currentQuestion.selectionType === 'multiple'
-                ? ((selectedAnswer as string[]) || []).includes(choice)
-                  ? 'selected'
-                  : ''
-                : selectedAnswer === choice
-                  ? 'selected'
-                  : ''
-                }`}
-              onClick={() => handleChoiceSelect(choice)}
-            >
-              {choice}
-            </li>
-          ))}
+          {currentQuestion.choices.map((choice, index) => {
+            const choiceValue = typeof choice === 'string' ? choice : choice.value;
+            const choiceLabel = typeof choice === 'string' ? choice : choice.label;
+
+            return (
+              <li
+                key={index}
+                className={`choice-item ${currentQuestion.selectionType === 'multiple'
+                  ? ((selectedAnswer as string[]) || []).includes(choiceValue)
+                    ? 'selected'
+                    : ''
+                  : selectedAnswer === choiceValue
+                    ? 'selected'
+                    : ''
+                  }`}
+                onClick={() => handleChoiceSelect(choiceValue)}
+              >
+                {choiceLabel}
+              </li>
+            );
+          })}
         </ul>
+
       </div>
 
       {/* Fixed Footer */}
