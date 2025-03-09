@@ -92,6 +92,7 @@ const Survey: React.FC = () => {
         console.log('Submitting survey with payload:', payload);
         const response = await submitSurvey(payload);
         setApiResponse(response);
+        localStorage.setItem("universities", JSON.stringify(response));
         alert('Survey submitted successfully!');
         console.log("Navigating with universities:", response);
         navigate('/recommendation', { state: { universities: response } });
