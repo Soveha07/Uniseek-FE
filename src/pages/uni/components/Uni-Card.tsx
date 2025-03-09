@@ -20,16 +20,18 @@ const UniversityCard: React.FC<UniversityCardProps> = ({
   imageUrl,
 }) => {
   const navigate = useNavigate();
-  
+
   const handleDetailClick = () => {
     navigate(`/universities/detail/${id}`);
   };
+
+  console.log("imageUrl", imageUrl);
 
   return (
     <div className="relative bg-gray-100 rounded-lg shadow-md p-4 mb-10 w-full max-w-md">
       <div className="w-full h-40 rounded-lg overflow-hidden">
         <img
-          src={imageUrl || "/Assets/UniPics/no-image.png"}
+          src={`${process.env.PUBLIC_URL}/university/${imageUrl || 'noImage.jpg'}`}
           alt={name}
           className="w-full h-full object-cover"
         />
@@ -66,7 +68,7 @@ export const UniversityCardDesktop: React.FC<UniversityCardProps> = ({
   imageUrl,
 }) => {
   const navigate = useNavigate();
-  
+
   const handleDetailClick = () => {
     navigate(`/universities/detail/${id}`);
   };
@@ -75,7 +77,7 @@ export const UniversityCardDesktop: React.FC<UniversityCardProps> = ({
     <div className="relative bg-gray-100 rounded-lg shadow-md p-4 mb-10 w-full h-[420px]">
       <div className="w-full h-40 rounded-lg overflow-hidden">
         <img
-          src={imageUrl || "/Assets/UniPics/no-image.png"}
+          src={`${process.env.PUBLIC_URL}/university/${imageUrl || 'noImage.jpg'}`}
           alt={name}
           className="w-full h-full object-cover"
         />

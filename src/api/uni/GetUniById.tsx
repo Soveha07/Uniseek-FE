@@ -32,27 +32,27 @@ export interface University {
   facility: string;
   shift: string;
   photo_url: string;
-  universityMajors?: UniversityMajor[]; 
+  universityMajors?: UniversityMajor[];
 }
 
 export const getUniversityById = async (id: number): Promise<University | null> => {
   try {
     console.log(`Fetching university with ID ${id} from: ${API_BASE_URL}/universities/${id}`);
-    
+
     const response = await axios.get(`${API_BASE_URL}/universities/${id}`, {
       params: {
         relations: 'universityMajors.major',
-        _t: new Date().getTime() 
+        _t: new Date().getTime()
       }
     });
-    
+
     console.log('API Response Status:', response.status);
     console.log('API Response Type:', typeof response.data);
     console.log('API Response Data:', JSON.stringify(response.data, null, 2));
-    
+
     if (response.data) {
       let universityData: any = response.data;
-      
+
       if (typeof universityData === 'object' && universityData !== null) {
         if (universityData && 'data' in universityData && universityData.data) {
           universityData = universityData.data;
@@ -61,15 +61,15 @@ export const getUniversityById = async (id: number): Promise<University | null> 
 
         console.log('University data structure after extraction:', universityData);
         console.log('Has universityMajors property?', universityData && 'universityMajors' in universityData);
-        
+
         // Initialize universityMajors as empty array if it's null or undefined
         if (!universityData.universityMajors) {
           console.log('universityMajors is null/undefined, initializing as empty array');
           universityData.universityMajors = [];
         }
-        
+
         console.log('Final university data:', JSON.stringify(universityData, null, 2));
-        
+
         if (universityData.universityMajors && universityData.universityMajors.length > 0) {
           console.log(`Found ${universityData.universityMajors.length} majors`);
           universityData.universityMajors.forEach((major: any, idx: number) => {
@@ -85,7 +85,7 @@ export const getUniversityById = async (id: number): Promise<University | null> 
         return universityData as University;
       }
     }
-    
+
     console.error('University data format not recognized:', response.data);
     return null;
   } catch (error) {
@@ -94,6 +94,8 @@ export const getUniversityById = async (id: number): Promise<University | null> 
   }
 };
 
-export const formatPriceRange = (min: number, max: number): string => {
-  return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
+export const formatPriceRange = (min?: number, max?: number): string => {
+  const validMin = typeof min === 'number' ? min : 0;
+  const validMax = typeof max === 'number' ? max : 0;
+  return `$${validMin.toLocaleString()} - $${validMax.toLocaleString()}`;
 };

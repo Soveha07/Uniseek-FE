@@ -31,13 +31,13 @@ export const getAllUniversities = async (): Promise<University[]> => {
   try {
     console.log('Fetching from:', `${API_BASE_URL}/universities`);
     const response = await axios.get(`${API_BASE_URL}/universities`);
-    
+
     console.log('API Raw Response:', response);
     console.log('API Data Type:', typeof response.data);
     console.log('API Data Structure:', response.data);
-    
+
     let universities: University[] = [];
-    
+
     if (Array.isArray(response.data)) {
       universities = response.data;
     } else if (response.data && typeof response.data === 'object') {
@@ -48,7 +48,7 @@ export const getAllUniversities = async (): Promise<University[]> => {
         universities = [response.data as University];
       }
     }
-    
+
     console.log('Processed universities array:', universities);
     return universities;
   } catch (error) {
@@ -69,7 +69,7 @@ export const getUniversityById = async (id: number): Promise<University | null> 
       }
       return response.data as University;
     }
-    
+
     return null;
   } catch (error) {
     console.error(`Failed to fetch university with ID ${id}:`, error);
@@ -77,9 +77,10 @@ export const getUniversityById = async (id: number): Promise<University | null> 
   }
 };
 
-// Function to format price range for display in UI
-export const formatPriceRange = (min: number, max: number): string => {
-  return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
+export const formatPriceRange = (min?: number, max?: number): string => {
+  const validMin = typeof min === 'number' ? min : 0;
+  const validMax = typeof max === 'number' ? max : 0;
+  return `$${validMin.toLocaleString()} - $${validMax.toLocaleString()}`;
 };
 
 // Helper function
