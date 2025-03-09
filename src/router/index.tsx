@@ -26,7 +26,7 @@ const Routers: React.FC = () => {
         <Route path="/universities" element={<PublicRoute><UniversityList /></PublicRoute>} />
         <Route path="/universities/detail/:id" element={<PublicRoute><UniversityDetail /></PublicRoute>} />
         <Route path="/mentors" element={<MentorList />} />
-        <Route path="/mentors/detail" element={<MentorDetail />} />
+        <Route path="/mentors/detail/:id" element={<MentorDetail />} />
         {/* ----Protected Routes---- */}
         {/* <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} /> */}
         {/* ----End---- */}
