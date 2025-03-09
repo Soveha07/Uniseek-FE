@@ -31,6 +31,10 @@ const Routers: React.FC = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/recommendation" element={<UniversityRecommendation />} />
           <Route path="/survey" element={<ProtectedRoute><Survey /></ProtectedRoute>} />
+          <Route path="/universities" element={<PublicRoute><UniversityList /></PublicRoute>} />
+          <Route path="/universities/detail/:id" element={<PublicRoute><UniversityDetail /></PublicRoute>} />
+          <Route path="/mentors" element={<MentorList />} />
+          <Route path="/mentors/detail" element={<MentorDetail />} />
         </Route>
 
         {/* ----Public Routes---- */}
@@ -42,10 +46,10 @@ const Routers: React.FC = () => {
         {/* ----End---- */}
 
         {/* University Listing */}
-        <Route path="/universities" element={<PublicRoute><UniversityList /></PublicRoute>} />
+        {/* <Route path="/universities" element={<PublicRoute><UniversityList /></PublicRoute>} />
         <Route path="/universities/detail/:id" element={<PublicRoute><UniversityDetail /></PublicRoute>} />
         <Route path="/mentors" element={<MentorList />} />
-        <Route path="/mentors/detail" element={<MentorDetail />} />
+        <Route path="/mentors/detail" element={<MentorDetail />} /> */}
         {/* ----Protected Routes---- */}
 
         {/* ----End---- */}

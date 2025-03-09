@@ -19,11 +19,12 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
   };
 
   return (
-    <header className="sticky top-0 left-0 right-0 w-full p-2 flex justify-between items-center border-b z-10">
-      <button className="text-2xl">←</button>
-      <h1 className="text-xl font-bold">{getPageTitle()}</h1>
-      <button className="text-2xl">👤</button>
-    </header>
+    // <header className="sticky top-0 left-0 right-0 w-full p-2 flex justify-between items-center border-b z-10">
+    //   <button className="text-2xl">←</button>
+    //   <h1 className="text-xl font-bold">{getPageTitle()}</h1>
+    //   <button className="text-2xl">👤</button>
+    // </header>
+    <p></p>
   );
 };
 
