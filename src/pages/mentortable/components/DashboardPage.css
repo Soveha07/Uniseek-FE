@@ -1,0 +1,16 @@
+/* DashboardPage.css */
+/* Add a gray border between table rows */
+.p-datatable-gridlines .p-datatable-tbody > tr {
+    border-bottom: 1px solid gray;
+}
+
+/* Strike-through styling for declined rows */
+.declined-row td {
+text-decoration: line-through;
+color: gray;
+}
+
+/* Override ProgressBar color */
+.p-progressbar-value {
+    background-color: #0A66C2 !important;
+}  
