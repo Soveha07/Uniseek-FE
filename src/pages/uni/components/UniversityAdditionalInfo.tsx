@@ -79,7 +79,7 @@ const UniversityAdditionalInfo: React.FC<UniversityAdditionalInfoProps> = ({ fac
       </div>
 
       {/* Rest of component remains the same */}
-      <div className="mt-8 grid md:grid-cols-2 gap-8">
+      {/* <div className="mt-8 grid md:grid-cols-2 gap-8">
         <div>
           <h4 className="font-medium text-gray-900 mb-3">Admission Requirements</h4>
           <ul className="list-disc list-inside space-y-1.5 text-gray-600">
@@ -97,7 +97,7 @@ const UniversityAdditionalInfo: React.FC<UniversityAdditionalInfoProps> = ({ fac
               'Our campus features state-of-the-art computer labs, a well-stocked library, student lounges, cafeteria, sports facilities, and modern classrooms equipped with the latest educational technology.'}
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

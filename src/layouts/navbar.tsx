@@ -6,45 +6,61 @@ const NavBar: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-gray-200 bg-gray-50 dark:bg-[#FDFAF5]">
-      <div className="max-w-screen-xl h-14 flex items-center justify-between mx-auto p-4">
-        {/* Logo */}
-        <img
-          src="/onboarding/logo.png"
-          className="h-11 cursor-pointer"
-          alt="UniSeek Logo"
-          onClick={() => navigate("/home")}
-        />
+    <nav className="sticky top-0 z-50 border-b border-gray-200 bg-gray-50 dark:bg-[#FDFAF5] w-full">
+      {/* Full-width wrapper */}
+      <div className="w-full h-14 flex items-center justify-between px-4">
 
-        {/* Burger menu */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          type="button"
-          className="p-2 w-10 h-10 rounded-lg hover:bg-gray-100 focus:outline-none"
-          aria-expanded={isOpen}
-        >
-          <svg className="w-5 h-5" viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
-          </svg>
-        </button>
-      </div>
+        {/* Parent container for logo and menu */}
+        <div className="w-full flex items-center justify-between">
 
-      {/* Hidden menu */}
-      <div className={`${isOpen ? "block" : "hidden"} w-full bg-gray-50 dark:bg-gray-800`}>
-        <ul className="flex flex-col font-medium mt-4 rounded-lg">
-          {[
-            { name: "Home", path: "/home" },
-            { name: "Mentor", path: "/mentor" },
-            { name: "University", path: "/university" },
-            { name: "About Us", path: "/about" },
-          ].map(({ name, path }, index) => (
-            <li key={index}>
-              <Link to={path} className="block py-2 px-4 text-gray-900 rounded-sm hover:bg-blue-200 dark:text-gray-400 dark:hover:bg-gray-300 dark:hover:text-white bg-blue-50">
-                {name}
-              </Link>
-            </li>
-          ))}
-        </ul>
+          {/* Logo - stays at the left */}
+          <div className="ml-10">
+            <img
+              src="/onboarding/logo.png"
+              className="h-11 cursor-pointer"
+              alt="UniSeek Logo"
+              onClick={() => navigate("/home")}
+            />
+          </div>
+
+          {/* Menu - stays at the very right */}
+          <div className="ml-auto mr-10"> {/* Pushes menu to the far right */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              type="button"
+              className="p-2 w-10 h-10 rounded-lg hover:bg-gray-100 focus:outline-none md:hidden"
+              aria-expanded={isOpen}
+            >
+              <svg className="w-5 h-5" viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
+              </svg>
+            </button>
+
+            {/* Navigation Menu */}
+            <div
+              className={`absolute md:relative top-14 md:top-0 right-0 w-full md:w-auto md:block ${isOpen ? "block" : "hidden"}`}
+            >
+              <ul className="flex flex-col md:flex-row font-medium mt-4 md:mt-0 rounded-lg justify-end">
+                {[
+                  { name: "Home", path: "/home" },
+                  { name: "Mentor", path: "/mentors" },
+                  { name: "University", path: "/universities" },
+                  { name: "About Us", path: "/about" },
+                ].map(({ name, path }, index) => (
+                  <li key={index} className="md:relative">
+                    <Link
+                      to={path}
+                      className="block py-2 px-4 text-gray-900 rounded-sm transition-colors duration-200 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-300 dark:hover:text-white"
+                    >
+                      {name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+        </div>
       </div>
     </nav>
   );

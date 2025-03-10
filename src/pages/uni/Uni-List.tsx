@@ -55,7 +55,7 @@ const UniversityList: React.FC = () => {
         priceRange: formatPriceRange(uni.min_price || 0, uni.max_price || 0),
         type: uni.university_type || '',
         location: uni.location || '',
-        imageUrl: uni.photo_url || "/assets/images/no-image.png"
+        imageUrl: uni.photo_url || "noImage.jpg"
     }));
 
     // Filter

@@ -12,15 +12,15 @@ interface UniversityAboutProps {
   facility?: string;
 }
 
-const UniversityAbout: React.FC<UniversityAboutProps> = ({ 
-  name, 
-  description, 
-  totalEnrollment, 
-  classSize, 
-  minPrice, 
-  maxPrice, 
-  shift, 
-  facility 
+const UniversityAbout: React.FC<UniversityAboutProps> = ({
+  name,
+  description,
+  totalEnrollment,
+  classSize,
+  minPrice,
+  maxPrice,
+  shift,
+  facility
 }) => {
   return (
     <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-md transition-all hover:shadow-lg">
@@ -34,8 +34,19 @@ const UniversityAbout: React.FC<UniversityAboutProps> = ({
       </h2>
       <div className="mt-4 text-gray-700 leading-relaxed">
         <p className="mb-6">{description}</p>
-        
-        <h3 className="text-base font-semibold text-gray-800 mb-3">University Features</h3>
+
+        <div>
+          <h2 className="font-bold text-gray-900 mb-3">Admission Requirements</h2>
+          <ul className="list-disc list-inside space-y-1.5 text-gray-600">
+            <li>Completed application form</li>
+            <li>High school transcripts</li>
+            <li>Standardized test scores (if applicable)</li>
+            <li>Letters of recommendation</li>
+            <li>Personal statement or essay</li>
+          </ul>
+        </div>
+
+        {/* <h3 className="text-base font-semibold text-gray-800 mb-3">University Features</h3>
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div>
             <div className="font-medium text-gray-700">Enrollment</div>
@@ -47,7 +58,7 @@ const UniversityAbout: React.FC<UniversityAboutProps> = ({
           </div>
         </div>
         <h3 className="text-base font-semibold text-gray-800 mb-3">Facilities</h3>
-        <p className="text-gray-600">{facility || 'Information not available.'}</p>
+        <p className="text-gray-600">{facility || 'Information not available.'}</p> */}
       </div>
     </div>
   );

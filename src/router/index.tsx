@@ -29,10 +29,10 @@ const Routers: React.FC = () => {
         {/* ----With Layout---- */}
         <Route element={<Layout />}>
           <Route path="/home" element={<Home />} />
-          <Route path="/recommendation" element={<UniversityRecommendation />} />
+          <Route path="/uniRecommendation" element={<UniversityRecommendation />} />
           <Route path="/survey" element={<ProtectedRoute><Survey /></ProtectedRoute>} />
-          <Route path="/universities" element={<PublicRoute><UniversityList /></PublicRoute>} />
-          <Route path="/universities/detail/:id" element={<PublicRoute><UniversityDetail /></PublicRoute>} />
+          <Route path="/universities" element={<UniversityList />} />
+          <Route path="/universities/detail/:id" element={<UniversityDetail />} />
           <Route path="/mentors" element={<MentorList />} />
           <Route path="/mentors/detail" element={<MentorDetail />} />
         </Route>

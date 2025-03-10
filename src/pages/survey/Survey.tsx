@@ -95,7 +95,7 @@ const Survey: React.FC = () => {
         localStorage.setItem("universities", JSON.stringify(response));
         alert('Survey submitted successfully!');
         console.log("Navigating with universities:", response);
-        navigate('/recommendation', { state: { universities: response } });
+        navigate('/uniRecommendation', { state: { universities: response } });
       } catch (error) {
         alert('Failed to submit survey. Please try again.');
         console.log(error);

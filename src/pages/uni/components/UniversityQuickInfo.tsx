@@ -1,5 +1,6 @@
 import React from 'react';
 import { formatPriceRange } from '../../../api/uni/GetUniById';
+import { capitalizeFirstLetter } from '../helper/capitalize';
 
 interface UniversityQuickInfoProps {
   location: string;
@@ -30,7 +31,7 @@ const UniversityQuickInfo: React.FC<UniversityQuickInfoProps> = ({
         </span>
         Quick Information
       </h3>
-      
+
       <div className="space-y-4 mt-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full">
@@ -44,7 +45,7 @@ const UniversityQuickInfo: React.FC<UniversityQuickInfoProps> = ({
             <div className="font-medium">{location}</div>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +57,7 @@ const UniversityQuickInfo: React.FC<UniversityQuickInfoProps> = ({
             <div className="font-medium">{formatPriceRange(minPrice, maxPrice)}</div>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -68,7 +69,7 @@ const UniversityQuickInfo: React.FC<UniversityQuickInfoProps> = ({
             <div className="font-medium">{totalEnrollment ? totalEnrollment.toLocaleString() : 'N/A'}</div>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -77,13 +78,13 @@ const UniversityQuickInfo: React.FC<UniversityQuickInfoProps> = ({
           </div>
           <div>
             <div className="text-gray-500 text-sm">Type</div>
-            <div className="font-medium">{universityType}</div>
+            <div className="font-medium">{capitalizeFirstLetter(universityType)}</div>
           </div>
         </div>
       </div>
 
       {/* Programs Offered Section */}
-      <div className="mt-8 border-t pt-6">
+      {/* <div className="mt-8 border-t pt-6">
         <h4 className="text-md font-semibold text-gray-800 mb-4">Programs Offered</h4>
         <div className="space-y-3">
           <div className="flex gap-2">
@@ -99,7 +100,7 @@ const UniversityQuickInfo: React.FC<UniversityQuickInfoProps> = ({
             <span className="text-gray-700">Exchange Programs: {exchange ? 'Yes' : 'No'}</span>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
