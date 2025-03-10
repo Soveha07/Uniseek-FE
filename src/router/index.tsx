@@ -10,6 +10,7 @@ import UniversityList from "../pages/uni/Uni-List";
 import UniversityDetail from "../pages/uni/Uni-Detail";
 import MentorList from "../pages/mentor/Mentor-List";
 import MentorDetail from "../pages/mentor/MentorDetail";
+import MajorMentors from '../pages/mentor/MajorMentor';
 const Routers: React.FC = () => {
   return (
     <BrowserRouter>
@@ -26,7 +27,9 @@ const Routers: React.FC = () => {
         <Route path="/universities" element={<PublicRoute><UniversityList /></PublicRoute>} />
         <Route path="/universities/detail/:id" element={<PublicRoute><UniversityDetail /></PublicRoute>} />
         <Route path="/mentors" element={<MentorList />} />
+        <Route path="/mentors" element={<MentorList />} />
         <Route path="/mentors/detail/:id" element={<MentorDetail />} />
+        <Route path="/universities/:universityId/majors/:majorId/mentors" element={<MajorMentors />} />
         {/* ----Protected Routes---- */}
         {/* <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} /> */}
         {/* ----End---- */}

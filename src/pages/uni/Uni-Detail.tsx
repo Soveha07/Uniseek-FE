@@ -121,6 +121,7 @@ const UniversityDetail: React.FC = () => {
           <UniversityAdditionalInfo 
             facility={university.facility}
             universityMajors={university.universityMajors || []}
+            universityId={university.id}
           />
         </div>
         

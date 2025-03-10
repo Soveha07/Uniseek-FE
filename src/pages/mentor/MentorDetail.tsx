@@ -1,23 +1,48 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import MentorDetailLayout from "../../layouts/mentor/MentorDetailLayout";
 import MentorHeroBanner from "./components/MentorBanner";
 import MentorProfileHeader from "./components/MentorProfile";
 import MentorAboutSection from "./components/MentorAbout";
 import MentorScheduleSection from "./components/MentorSchedule";
 import BackButton from "./components/BackButton";
+import { getMentorById } from "../../api/mentor/GetMentorById";
 
 const MentorDetail: React.FC = () => {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const [mentorData, setMentorData] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedDay, setSelectedDay] = useState("Tue");
   const [selectedTime, setSelectedTime] = useState("11:00 AM");
+
+  useEffect(() => {
+    const fetchMentor = async () => {
+      try {
+        const data = await getMentorById(Number(id));
+        setMentorData(data);
+        console.log("Fetched mentor data:", data);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMentor();
+  }, [id]);
 
   const handleBackToList = () => {
     navigate('/mentors');
   };
-  
-  // Sample data 
-  const mentorData = {
+
+  // Sample data if couldn't fetch from backend
+  const sampleData = {
     id: 1,
     name: "Just Me",
     profileImage: "/assets/images/profile-pic.png",
@@ -47,23 +72,40 @@ const MentorDetail: React.FC = () => {
       availableTimes: ["09:00 AM", "11:00 AM", "01:00 PM", "03:00 PM", "05:00 PM", "07:00 PM"]
     }
   };
+  
+  const data = mentorData ? {
+    ...sampleData,
+    id: mentorData.id,
+    name: mentorData.fullName,
+    profileImage: mentorData.profileUrl || sampleData.profileImage,
+    university: mentorData.university?.name || sampleData.university,
+    title: mentorData.major?.name || sampleData.title,
+    bio: [mentorData.description || sampleData.bio[0], ...sampleData.bio.slice(1)],
+    rating: sampleData.rating,
+    reviewCount: sampleData.reviewCount,
+    ratings: sampleData.ratings,
+    schedule: sampleData.schedule
+  } : sampleData;
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <MentorDetailLayout>
-      <MentorHeroBanner profileImage={mentorData.profileImage} />
+      <MentorHeroBanner profileImage={data.profileImage} />
       
       <MentorProfileHeader 
-        name={mentorData.name}
-        rating={mentorData.rating}
-        reviewCount={mentorData.reviewCount}
-        university={mentorData.university}
-        title={mentorData.title}
+        name={data.name}
+        rating={data.rating}
+        reviewCount={data.reviewCount}
+        university={data.university}
+        title={data.title}
       />
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
         <MentorAboutSection 
-          bio={mentorData.bio}
-          ratings={mentorData.ratings}
+          bio={data.bio}
+          ratings={data.ratings}
         />
         
         <MentorScheduleSection 
@@ -71,9 +113,9 @@ const MentorDetail: React.FC = () => {
           setSelectedDay={setSelectedDay}
           selectedTime={selectedTime}
           setSelectedTime={setSelectedTime}
-          availableDays={mentorData.schedule.availableDays}
-          availableTimes={mentorData.schedule.availableTimes}
-          unavailableDays={mentorData.schedule.unavailableDays}
+          availableDays={data.schedule.availableDays}
+          availableTimes={data.schedule.availableTimes}
+          unavailableDays={data.schedule.unavailableDays}
         />
       </div>
       
