@@ -6,7 +6,7 @@ const NavBar: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-gray-200 bg-gray-50 dark:bg-[#FDFAF5] w-full">
+    <nav className="sticky top-0 z-50 border-b border-gray-200 bg-gray-50 w-full">
       {/* Full-width wrapper */}
       <div className="w-full h-14 flex items-center justify-between px-4">
 
@@ -45,7 +45,7 @@ const NavBar: React.FC = () => {
                   { name: "Home", path: "/home" },
                   { name: "Mentor", path: "/mentors" },
                   { name: "University", path: "/universities" },
-                  { name: "About Us", path: "/about" },
+                  { name: "Profile", path: "/profile" },
                 ].map(({ name, path }, index) => (
                   <li key={index} className="md:relative">
                     <Link

@@ -75,7 +75,7 @@ const Home: React.FC = () => {
             title="Meet university representatives in person"
             description="Create connections directly with the senior."
             buttonText="Find Your Mentor"
-            onClick={() => alert("")}
+            onClick={() => navigate('/mentors')}
           />
         </div>
 
@@ -93,7 +93,7 @@ const Home: React.FC = () => {
             title="Find the right university for you"
             description="Find out which universities excel in your chosen subject"
             buttonText="Find Your University"
-            onClick={() => alert("")}
+            onClick={() => navigate('/universities')}
           />
           <img className="w-60 h-60 mt-6" src="homepage/student.png" alt="student" />
         </div>
