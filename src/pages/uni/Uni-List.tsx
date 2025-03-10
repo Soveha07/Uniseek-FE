@@ -14,16 +14,16 @@ const UniversityList: React.FC = () => {
     const navigate = useNavigate();
 
     // Different items per page based on screen size
-    const [itemsPerPage, setItemsPerPage] = useState(() => 
-        window.innerWidth >= 768 ? 10 : 10
+    const [itemsPerPage, setItemsPerPage] = useState(() =>
+        window.innerWidth >= 768 ? 8 : 8
     );
 
     // Update items per page on window resize
     useEffect(() => {
         const handleResize = () => {
-            setItemsPerPage(window.innerWidth >= 768 ? 10 : 10);
+            setItemsPerPage(window.innerWidth >= 768 ? 8 : 8);
         }
-        
+
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -59,7 +59,7 @@ const UniversityList: React.FC = () => {
     }));
 
     // Filter
-    const filteredUniversities = selectedSchool 
+    const filteredUniversities = selectedSchool
         ? transformedUniversities.filter(uni => uni.type.toLowerCase().includes(selectedSchool.toLowerCase()))
         : transformedUniversities;
 
@@ -81,7 +81,7 @@ const UniversityList: React.FC = () => {
                     <Header />
                 </div>
             </div>
-            
+
             {/* Main content that scrolls as one unit */}
             <div className="w-full max-w-lg md:w-full md:max-w-none">
                 {/* Full width container with no padding on desktop */}
@@ -89,7 +89,7 @@ const UniversityList: React.FC = () => {
                     <h2 className="text-b1 font-bold my-1 text-center md:text-2xl md:my-6">
                         List of Universities
                     </h2>
-                    
+
                     <div className="flex flex-row items-center justify-between w-full px-6 gap-2 md:px-4 md:mb-6">
                         <div className="flex items-center gap-2">
                             <label className="text-b2 font-medium md:text-lg">School Type:</label>
@@ -97,9 +97,8 @@ const UniversityList: React.FC = () => {
                                 {["Public", "Private"].map((type) => (
                                     <button
                                         key={type}
-                                        className={`px-4 py-1 md:px-6 md:py-2 rounded-full text-white font-semibold shadow-md transition ${
-                                            selectedSchool === type ? "bg-blue-600" : "bg-blue-500"
-                                        }`}
+                                        className={`px-4 py-1 md:px-6 md:py-2 rounded-full text-white font-semibold shadow-md transition ${selectedSchool === type ? "bg-blue-600" : "bg-blue-500"
+                                            }`}
                                         onClick={() => {
                                             setSelectedSchool(selectedSchool === type ? null : type);
                                             setCurrentPage(1);
@@ -111,7 +110,7 @@ const UniversityList: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    
+
                     {loading ? (
                         <div className="text-center py-8">
                             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
@@ -122,22 +121,22 @@ const UniversityList: React.FC = () => {
                         <>
                             {/* For mobile view */}
                             <div className="md:hidden overflow-y-auto max-h-[600px]">
-                                <UniversityListLayout 
-                                    universities={paginatedUniversities} 
-                                    view="mobile" 
+                                <UniversityListLayout
+                                    universities={paginatedUniversities}
+                                    view="mobile"
                                 />
                             </div>
-                            
+
                             {/* For desktop/tablet view */}
                             <div className="hidden md:block md:w-full md:px-0">
-                                <UniversityListLayout 
-                                    universities={paginatedUniversities} 
-                                    view="desktop" 
+                                <UniversityListLayout
+                                    universities={paginatedUniversities}
+                                    view="desktop"
                                 />
                             </div>
                         </>
                     )}
-                    
+
                     {/* Pagination */}
                     {!loading && !error && (
                         <div className="mt-4 mb-6 flex justify-center">
@@ -149,10 +148,10 @@ const UniversityList: React.FC = () => {
                             />
                         </div>
                     )}
-                    
+
                     {/* Back Home button */}
                     <div className="flex justify-center mt-5 mb-10">
-                        <button 
+                        <button
                             className="bg-blue-600 text-white text-sm font-semibold px-6 py-2 md:py-3 rounded-full shadow-md hover:bg-blue-700 transition"
                             onClick={handleBackHome}
                         >

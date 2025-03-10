@@ -40,25 +40,6 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* University */}
-      <div className="flex flex-wrap justify-center gap-6 mt-6">
-        <Box
-          title="University Ranking 2025"
-          description="Discover the top-performing universities in Cambodia"
-          imgPath="/homepage/uni.jpeg"
-          buttonText="Explore"
-          onClick={() => alert("")}
-
-        />
-        <Box
-          title="University Ranking by Subject 2025"
-          description="Discover the top-performing universities in Cambodia"
-          imgPath="/homepage/major.jpg"
-          buttonText="Explore"
-          onClick={() => alert("")}
-        />
-      </div>
-
       {/* How UniSeek can support u*/}
       <div className="flex flex-col items-center text-center max-w-lg mx-auto px-4 mt-10">
         <h1 className="font-bold text-2xl mb-4">How UniSeek can support you?</h1>
@@ -102,6 +83,26 @@ const Home: React.FC = () => {
       <div className="flex flex-col items-center text-center max-w-lg mx-auto px-4 mt-20">
         <p className="font-bold mb-4">Not sure which university is the right fit for you? Take our quick survey to discover your perfect match!</p>
         <Button className="bg-myprimary text-white font-bold rounded-full w-96 h-14 mb-9" text="Let's Get Started" onClick={() => navigate('/survey')} />
+      </div>
+
+
+      {/* University */}
+      <div className="flex flex-wrap justify-center gap-6 mt-6 mb-6">
+        <Box
+          title="University Ranking 2025"
+          description="Discover the top-performing universities in Cambodia"
+          imgPath="/homepage/uni.jpeg"
+          buttonText="Explore"
+          onClick={() => alert("")}
+
+        />
+        <Box
+          title="University Ranking by Subject 2025"
+          description="Discover the top-performing universities in Cambodia"
+          imgPath="/homepage/major.jpg"
+          buttonText="Explore"
+          onClick={() => alert("")}
+        />
       </div>
     </>
   );

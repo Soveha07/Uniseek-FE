@@ -42,7 +42,7 @@ const UniversityCard: React.FC<UniversityCardProps> = ({
       </div>
 
       <div className="p-4">
-        <h3 className="font-bold text-b1">{name}</h3>
+        <h4 className="font-bold text-b1">{name}</h4>
         <ul className="text-b2 text-sm mt-1">
           <li className="flex items-center">
             <span className="text-blue-500 text-lg mr-1">💰</span>
@@ -99,7 +99,7 @@ export const UniversityCardDesktop: React.FC<UniversityCardProps> = ({
       </div>
 
       <div className="p-4">
-        <h3 className="font-bold text-b1 break-words whitespace-normal">{name}</h3>
+        <h2 className="font-bold text-xl break-words whitespace-normal">{name}</h2>
         <ul className="text-b2 text-sm mt-3 space-y-2">
           <li className="flex items-center">
             <span className="text-blue-500 text-lg mr-1">💰</span>
