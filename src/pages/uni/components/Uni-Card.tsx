@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { capitalizeFirstLetter } from "../helper/capitalize";
+import { capitalizeFirstLetter } from "../../../helpers/capitalize";
 
 interface UniversityCardProps {
   id: number;

@@ -11,7 +11,7 @@ interface MentorCardProps {
 
 const MentorCard: React.FC<MentorCardProps> = ({ id, name, university, major, imageUrl }) => {
   const navigate = useNavigate();
-  
+
   const handleDetailClick = () => {
     if (id) {
       navigate(`/mentors/detail/${id}`);
@@ -23,16 +23,19 @@ const MentorCard: React.FC<MentorCardProps> = ({ id, name, university, major, im
   return (
     <div className="bg-white shadow-md rounded-lg p-4 mb-10 relative">
       <img
-        src={imageUrl || "/Assets/mentor-default.png"}
+        src={`${process.env.PUBLIC_URL}/mentor/${imageUrl || 'noImage.jpg'}`}
         alt={name}
         className="w-full h-40 object-cover rounded-md"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = `${process.env.PUBLIC_URL}/university/noImage.jpg`;
+        }}
       />
-      <div className="mt-3">
+      <div className="mt-3 mb-3">
         <h3 className="text-lg font-bold text-gray-900">{name}</h3>
         <p className="text-sm text-gray-500">{university}</p>
         <p className="text-sm text-gray-700 mt-2">Major: {major}</p>
       </div>
-      
+
       {/* Detail button */}
       <div className="absolute bottom-[-14px] right-4">
         <button

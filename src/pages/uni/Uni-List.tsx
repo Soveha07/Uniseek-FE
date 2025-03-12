@@ -4,6 +4,7 @@ import UniversityListLayout from "../../layouts/uni/UniListLayout";
 import Pagination from "../../components/common/Pagination";
 import { getAllUniversities, formatPriceRange, University } from "../../api/uni/Uni-List-API";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/common/Loading";
 
 const UniversityList: React.FC = () => {
     const [universities, setUniversities] = useState<University[]>([]);
@@ -112,9 +113,10 @@ const UniversityList: React.FC = () => {
                     </div>
 
                     {loading ? (
-                        <div className="text-center py-8">
-                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
-                        </div>
+                        // <div className="text-center py-8">
+                        //     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+                        // </div>
+                        <Loading></Loading>
                     ) : error ? (
                         <div className="text-center text-red-500 py-8">{error}</div>
                     ) : (

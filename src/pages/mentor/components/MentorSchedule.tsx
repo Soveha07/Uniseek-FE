@@ -1,6 +1,7 @@
 // Not using this currently, substitute this with MentorScheduleContainer
 // NOTE* THIS FILE IS NOT BEING USED
 import React from 'react';
+import { formatTime } from '../../../helpers/timeFormat';
 
 interface MentorScheduleSectionProps {
   selectedDay: string;
@@ -14,10 +15,10 @@ interface MentorScheduleSectionProps {
   isLoading?: boolean;
 }
 
-const MentorScheduleSection: React.FC<MentorScheduleSectionProps> = ({ 
-  selectedDay, 
-  setSelectedDay, 
-  selectedTime, 
+const MentorScheduleSection: React.FC<MentorScheduleSectionProps> = ({
+  selectedDay,
+  setSelectedDay,
+  selectedTime,
   setSelectedTime,
   availableDays,
   availableTimes,
@@ -87,7 +88,7 @@ const MentorScheduleSection: React.FC<MentorScheduleSectionProps> = ({
                   ? "bg-blue-600 text-white border-blue-600 shadow-md"
                   : "bg-white hover:border-blue-400"}`}
             >
-              {time}
+              ({formatTime(time)})
             </button>
           ))}
         </div>
@@ -102,7 +103,7 @@ const MentorScheduleSection: React.FC<MentorScheduleSectionProps> = ({
         </div>
         <div className="flex justify-between text-sm mb-1">
           <span className="text-gray-600">Time:</span>
-          <span className="font-medium">{selectedTime || '-'}</span>
+          <span className="font-medium">{formatTime(selectedTime) || '-'}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Duration:</span>
@@ -110,7 +111,7 @@ const MentorScheduleSection: React.FC<MentorScheduleSectionProps> = ({
         </div>
       </div>
 
-      <button 
+      <button
         className="w-full mt-6 px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition flex items-center justify-center gap-2"
         onClick={onBookSession}
         disabled={!selectedDay || !selectedTime || isLoading}

@@ -8,6 +8,7 @@ import UniversityAbout from "./components/UniversityAbout";
 import UniversityQuickInfo from "./components/UniversityQuickInfo";
 import UniversityAdditionalInfo from "./components/UniversityAdditionalInfo";
 import { getUniversityById, University } from "../../api/uni/GetUniById";
+import Loading from "../../components/common/Loading";
 
 const UniversityDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,14 +47,15 @@ const UniversityDetail: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-gradient-to-b from-sky-50 to-blue-100 min-h-screen">
-        <div className="container mx-auto py-6">
-          <Header />
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
-        </div>
-      </div>
+      // <div className="bg-gradient-to-b from-sky-50 to-blue-100 min-h-screen">
+      //   <div className="container mx-auto py-6">
+      //     <Header />
+      //     <div className="flex justify-center items-center h-64">
+      //       <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      //     </div>
+      //   </div>
+      // </div>
+      <Loading></Loading>
     );
   }
 

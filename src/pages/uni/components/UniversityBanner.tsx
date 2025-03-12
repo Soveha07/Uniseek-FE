@@ -7,7 +7,7 @@ interface UniversityBannerProps {
 
 const UniversityBanner: React.FC<UniversityBannerProps> = ({ photoUrl, name }) => {
   return (
-    <div className="relative w-full h-40 md:h-48 lg:h-56 bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-300 rounded-xl mb-16">
+    <div className="relative w-full h-40 md:h-48 lg:h-56 bg-gradient-to-r from-blue-200 via-blue-400 to-indigo-600 rounded-xl mb-16">
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay"
         style={{

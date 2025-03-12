@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getMentorSchedule, bookMentorSession } from '../../../api/mentor/MentorSchedule';
+import { formatTime } from '../../../helpers/timeFormat';
 
 interface MentorScheduleContainerProps {
   mentorId: number;
@@ -180,7 +181,7 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
                   ? "bg-blue-600 text-white border-blue-600 shadow-md"
                   : "bg-white hover:border-blue-400"}`}
             >
-              {time}
+              {formatTime(time)}
             </button>
           ))}
         </div>
@@ -195,7 +196,7 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
         </div>
         <div className="flex justify-between text-sm mb-1">
           <span className="text-gray-600">Time:</span>
-          <span className="font-medium">{selectedTime || '-'}</span>
+          <span className="font-medium">{formatTime(selectedTime) || '-'}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Duration:</span>

@@ -125,12 +125,12 @@ const Survey: React.FC = () => {
   return (
     <div className="survey-container">
       <header className="survey-header">
-        <h1>Survey</h1>
+        <h1 className='text-b1 font-bold'>Survey</h1>
       </header>
 
       <div className="survey-content">
-        <h2>{currentQuestion.question}</h2>
-        <p>{currentQuestion.subQuestion}</p>
+        <h2 className='text-b2 font-bold'>{currentQuestion.question}</h2>
+        <p className='text-b2 font-bold'>{currentQuestion.subQuestion}</p>
         <ul className="survey-choices">
           {currentQuestion.choices.map((choice, index) => {
             const choiceValue = typeof choice === 'string' ? choice : choice.value;

@@ -4,9 +4,9 @@ import { getFilteredMentors, Mentor } from '../../api/mentor/GetFilteredMentors'
 
 
 interface MentorCardProps {
-    id?: number;
-  }
-const MajorMentors: React.FC<MentorCardProps> =  ({ id })  => {
+  id?: number;
+}
+const MajorMentors: React.FC<MentorCardProps> = ({ id }) => {
   const { universityId, majorId } = useParams<{ universityId: string, majorId: string }>();
   const [mentors, setMentors] = useState<Mentor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,10 +63,10 @@ const MajorMentors: React.FC<MentorCardProps> =  ({ id })  => {
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-2xl font-bold mb-6">Mentors</h1>
-      
+
       {mentors.length === 0 ? (
         <div className="bg-blue-50 p-6 rounded-lg shadow-sm border border-blue-100 text-center">
-          <p className="text-blue-700">No mentors found for this major and university.</p>
+          <p className="text-blue-700">No mentors found for this university's major.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -76,9 +76,9 @@ const MajorMentors: React.FC<MentorCardProps> =  ({ id })  => {
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-full overflow-hidden mr-4">
                     {mentor.profileUrl ? (
-                      <img 
-                        src={mentor.profileUrl} 
-                        alt={mentor.fullName} 
+                      <img
+                        src={mentor.profileUrl}
+                        alt={mentor.fullName}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -92,11 +92,11 @@ const MajorMentors: React.FC<MentorCardProps> =  ({ id })  => {
                     <p className="text-sm text-gray-600">{mentor.major?.name || "No major info"}</p>
                   </div>
                 </div>
-                
+
                 <p className="text-gray-700 mb-4 line-clamp-3">{mentor.description || "No description available"}</p>
-                
+
                 <div className="flex justify-end mt-4">
-                  <a 
+                  <a
                     href={`/mentors/detail/${mentor.id}`}
                     className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                   >

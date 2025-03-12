@@ -7,6 +7,7 @@ import MentorAboutSection from "./components/MentorAbout";
 import BackButton from "./components/BackButton";
 import { getMentorById } from "../../api/mentor/GetMentorById";
 import MentorScheduleContainer from './components/MentorScheduleContainer';
+import Loading from "../../components/common/Loading";
 
 const MentorDetail: React.FC = () => {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ const MentorDetail: React.FC = () => {
     ratings: sampleData.ratings
   } : sampleData;
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading></Loading>;
   if (error) return <div>Error: {error}</div>;
 
   return (
