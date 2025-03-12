@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   title?: string;
@@ -7,6 +7,11 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  
+  const handleGoBack = () => {
+    navigate(-1); // 
+  };
   
   const getPageTitle = () => {
     if (title) return title;

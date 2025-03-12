@@ -1,30 +1,123 @@
-// Not using this currently, substitute this with MentorScheduleContainer
-// NOTE* THIS FILE IS NOT BEING USED
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getMentorSchedule, bookMentorSession } from '../../../api/mentor/MentorSchedule';
 
-interface MentorScheduleSectionProps {
-  selectedDay: string;
-  setSelectedDay: (day: string) => void;
-  selectedTime: string;
-  setSelectedTime: (time: string) => void;
-  availableDays: string[];
-  availableTimes: string[];
-  unavailableDays?: string[];
-  onBookSession?: () => void;
-  isLoading?: boolean;
+interface MentorScheduleContainerProps {
+  mentorId: number;
 }
 
-const MentorScheduleSection: React.FC<MentorScheduleSectionProps> = ({ 
-  selectedDay, 
-  setSelectedDay, 
-  selectedTime, 
-  setSelectedTime,
-  availableDays,
-  availableTimes,
-  unavailableDays = [],
-  onBookSession,
-  isLoading = false
-}) => {
+const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mentorId }) => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [bookingLoading, setBookingLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [availableDays, setAvailableDays] = useState<string[]>([]);
+  const [timesByDay, setTimesByDay] = useState<{[day: string]: string[]}>({});
+  const [unavailableDays, setUnavailableDays] = useState<string[]>([]);
+  const [selectedDay, setSelectedDay] = useState<string>('');
+  const [selectedTime, setSelectedTime] = useState<string>('');
+  const [availableTimes, setAvailableTimes] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      setLoading(true);
+      try {
+        const scheduleData = await getMentorSchedule(mentorId);
+        
+        if (scheduleData.availableDays.length > 0) {
+          setAvailableDays(scheduleData.availableDays);
+
+          setTimesByDay(scheduleData.availableTimes);
+
+          const firstDay = scheduleData.availableDays[0];
+          setSelectedDay(firstDay);
+          
+          if (scheduleData.availableTimes[firstDay]) {
+            setAvailableTimes(scheduleData.availableTimes[firstDay]);
+            
+            if (scheduleData.availableTimes[firstDay].length > 0) {
+              setSelectedTime(scheduleData.availableTimes[firstDay][0]);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch mentor schedule:', err);
+        setError('Failed to load mentor availability. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSchedule();
+  }, [mentorId]);
+
+  useEffect(() => {
+    if (selectedDay && timesByDay[selectedDay]) {
+      setAvailableTimes(timesByDay[selectedDay]);
+      if (timesByDay[selectedDay].length > 0) {
+        setSelectedTime(timesByDay[selectedDay][0]);
+      } else {
+        setSelectedTime('');
+      }
+    }
+  }, [selectedDay, timesByDay]);
+
+  const handleDaySelect = (day: string) => {
+    setSelectedDay(day);
+  };
+
+  const handleBookSession = async () => {
+    if (!selectedDay || !selectedTime) {
+      alert('Please select both a day and time for your session.');
+      return;
+    }
+
+    setBookingLoading(true);
+    try {
+      await bookMentorSession(mentorId, selectedDay, selectedTime);
+      alert(`Session booked successfully for ${selectedDay} at ${selectedTime}`);
+    } catch (error) {
+      console.error('Booking error:', error);
+      alert(`Failed to book session: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setBookingLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="bg-white p-6 rounded-xl shadow-md">
+        <div className="flex justify-center items-center h-40">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-white p-6 rounded-xl shadow-md">
+        <div className="text-red-500 text-center">
+          <svg className="w-10 h-10 mx-auto text-red-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (availableDays.length === 0) {
+    return (
+      <div className="bg-white p-6 rounded-xl shadow-md">
+        <div className="text-gray-500 text-center">
+          <svg className="w-10 h-10 mx-auto text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <p>This mentor has no available time slots.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-6 rounded-xl shadow-md transition-all hover:shadow-lg">
       <h3 className="text-lg font-semibold text-gray-800 flex items-center">
@@ -53,7 +146,7 @@ const MentorScheduleSection: React.FC<MentorScheduleSectionProps> = ({
           {availableDays.map((day) => (
             <button
               key={day}
-              onClick={() => setSelectedDay(day)}
+              onClick={() => handleDaySelect(day)}
               disabled={unavailableDays.includes(day)}
               className={`p-2 border rounded-lg text-center transition
                 ${selectedDay === day
@@ -94,7 +187,7 @@ const MentorScheduleSection: React.FC<MentorScheduleSectionProps> = ({
       </div>
 
       {/* Session info */}
-      <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+      <div className="mt-6 p-4 bg-white rounded-lg border border-blue-100">
         <h4 className="font-semibold text-blue-800 mb-2">Your session</h4>
         <div className="flex justify-between text-sm mb-1">
           <span className="text-gray-600">Day:</span>
@@ -112,16 +205,12 @@ const MentorScheduleSection: React.FC<MentorScheduleSectionProps> = ({
 
       <button 
         className="w-full mt-6 px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition flex items-center justify-center gap-2"
-        onClick={onBookSession}
-        disabled={!selectedDay || !selectedTime || isLoading}
+        onClick={handleBookSession}
+        disabled={!selectedDay || !selectedTime || bookingLoading}
       >
-        {isLoading ? (
+        {bookingLoading ? (
           <>
-            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <span>Booking...</span>
+            <span className='bg-blue-600'>Booking...</span>
           </>
         ) : (
           'Book Your Session'
@@ -131,4 +220,4 @@ const MentorScheduleSection: React.FC<MentorScheduleSectionProps> = ({
   );
 };
 
-export default MentorScheduleSection;
+export default MentorScheduleContainer;

@@ -14,6 +14,7 @@ import UniversityList from "../pages/uni/Uni-List";
 import UniversityDetail from "../pages/uni/Uni-Detail";
 import MentorList from "../pages/mentor/Mentor-List";
 import MentorDetail from "../pages/mentor/MentorDetail";
+import MajorMentors from "../pages/mentor/MajorMentor";
 
 const Layout: React.FC = () => (
   <>
@@ -35,6 +36,7 @@ const Routers: React.FC = () => {
           <Route path="/universities/detail/:id" element={<UniversityDetail />} />
           <Route path="/mentors" element={<MentorList />} />
           <Route path="/mentors/detail/:id" element={<MentorDetail />} />
+          <Route path="/universities/:universityId/majors/:majorId/mentors" element={<MajorMentors />} />
         </Route>
 
         {/* ----Public Routes---- */}

@@ -1,23 +1,46 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import MentorDetailLayout from "../../layouts/mentor/MentorDetailLayout";
 import MentorHeroBanner from "./components/MentorBanner";
 import MentorProfileHeader from "./components/MentorProfile";
 import MentorAboutSection from "./components/MentorAbout";
-import MentorScheduleSection from "./components/MentorSchedule";
 import BackButton from "./components/BackButton";
+import { getMentorById } from "../../api/mentor/GetMentorById";
+import MentorScheduleContainer from './components/MentorScheduleContainer';
 
 const MentorDetail: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedDay, setSelectedDay] = useState("Tue");
-  const [selectedTime, setSelectedTime] = useState("11:00 AM");
+  const { id } = useParams<{ id: string }>();
+  const mentorId = parseInt(id || '0', 10);
+  const [mentorData, setMentorData] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchMentor = async () => {
+      try {
+        const data = await getMentorById(Number(id));
+        setMentorData(data);
+        console.log("Fetched mentor data:", data);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMentor();
+  }, [id]);
 
   const handleBackToList = () => {
     navigate('/mentors');
   };
-  
-  // Sample data 
-  const mentorData = {
+
+  const sampleData = {
     id: 1,
     name: "Just Me",
     profileImage: "/assets/images/profile-pic.png",
@@ -40,44 +63,52 @@ const MentorDetail: React.FC = () => {
         { label: "2", value: 10, percentage: "7%" },
         { label: "1", value: 5, percentage: "3%" }
       ]
-    },
-    schedule: {
-      availableDays: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-      unavailableDays: ["Wed"],
-      availableTimes: ["09:00 AM", "11:00 AM", "01:00 PM", "03:00 PM", "05:00 PM", "07:00 PM"]
     }
   };
 
+  const data = mentorData ? {
+    ...sampleData,
+    id: mentorData.id,
+    name: mentorData.fullName,
+    profileImage: mentorData.profileUrl || sampleData.profileImage,
+    university: mentorData.university?.name || sampleData.university,
+    title: mentorData.major?.name || sampleData.title,
+    bio: [mentorData.description || sampleData.bio[0], ...sampleData.bio.slice(1)],
+    rating: sampleData.rating,
+    reviewCount: sampleData.reviewCount,
+    ratings: sampleData.ratings
+  } : sampleData;
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <MentorDetailLayout>
-      <MentorHeroBanner profileImage={mentorData.profileImage} />
-      
-      <MentorProfileHeader 
-        name={mentorData.name}
-        rating={mentorData.rating}
-        reviewCount={mentorData.reviewCount}
-        university={mentorData.university}
-        title={mentorData.title}
+      <MentorHeroBanner profileImage={data.profileImage} />
+
+      <MentorProfileHeader
+        name={data.name}
+        rating={data.rating}
+        reviewCount={data.reviewCount}
+        university={data.university}
+        title={data.title}
       />
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-        <MentorAboutSection 
-          bio={mentorData.bio}
-          ratings={mentorData.ratings}
-        />
-        
-        <MentorScheduleSection 
-          selectedDay={selectedDay}
-          setSelectedDay={setSelectedDay}
-          selectedTime={selectedTime}
-          setSelectedTime={setSelectedTime}
-          availableDays={mentorData.schedule.availableDays}
-          availableTimes={mentorData.schedule.availableTimes}
-          unavailableDays={mentorData.schedule.unavailableDays}
-        />
+
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <MentorAboutSection
+              bio={data.bio}
+              ratings={data.ratings}
+            />
+          </div>
+          <div>
+            {mentorId > 0 && <MentorScheduleContainer mentorId={mentorId} />}
+          </div>
+        </div>
       </div>
-      
-      <BackButton 
+
+      <BackButton
         label="Back to Mentor List"
         onClick={handleBackToList}
       />

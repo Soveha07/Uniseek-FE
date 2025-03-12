@@ -9,12 +9,12 @@ interface MentorProfileHeaderProps {
   title: string;
 }
 
-const MentorProfileHeader: React.FC<MentorProfileHeaderProps> = ({ 
-  name, 
-  rating, 
-  reviewCount, 
-  university, 
-  title 
+const MentorProfileHeader: React.FC<MentorProfileHeaderProps> = ({
+  name,
+  rating,
+  reviewCount,
+  university,
+  title
 }) => {
   // Generate star rating
   const stars = [];
@@ -31,14 +31,10 @@ const MentorProfileHeader: React.FC<MentorProfileHeaderProps> = ({
         {stars}
         <span className="text-gray-600 ml-1 text-sm">({rating})</span>
       </div>
-      
+
       <div className="flex flex-col mt-2">
         <span className="text-gray-700 font-medium">{university}</span>
         <span className="text-gray-500 text-sm mt-0.5">{title}</span>
-      </div>
-      
-      <div className="flex mt-4 space-x-3">
-        <SocialLinks />
       </div>
     </div>
   );
