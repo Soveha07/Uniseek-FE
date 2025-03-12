@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   title?: string;
@@ -7,6 +7,11 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  
+  const handleGoBack = () => {
+    navigate(-1); // 
+  };
   
   const getPageTitle = () => {
     if (title) return title;
@@ -20,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 
   return (
     <header className="sticky top-0 left-0 right-0 w-full p-2 flex justify-between items-center border-b z-10">
-      <button className="text-2xl">←</button>
+      <button className="text-2xl" onClick={handleGoBack}>←</button>
       <h1 className="text-xl font-bold">{getPageTitle()}</h1>
       <button className="text-2xl">👤</button>
     </header>

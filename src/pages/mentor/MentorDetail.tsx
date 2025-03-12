@@ -4,18 +4,17 @@ import MentorDetailLayout from "../../layouts/mentor/MentorDetailLayout";
 import MentorHeroBanner from "./components/MentorBanner";
 import MentorProfileHeader from "./components/MentorProfile";
 import MentorAboutSection from "./components/MentorAbout";
-import MentorScheduleSection from "./components/MentorSchedule";
 import BackButton from "./components/BackButton";
 import { getMentorById } from "../../api/mentor/GetMentorById";
+import MentorScheduleContainer from './components/MentorScheduleContainer';
 
 const MentorDetail: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const mentorId = parseInt(id || '0', 10);
   const [mentorData, setMentorData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedDay, setSelectedDay] = useState("Tue");
-  const [selectedTime, setSelectedTime] = useState("11:00 AM");
 
   useEffect(() => {
     const fetchMentor = async () => {
@@ -41,7 +40,6 @@ const MentorDetail: React.FC = () => {
     navigate('/mentors');
   };
 
-  // Sample data if couldn't fetch from backend
   const sampleData = {
     id: 1,
     name: "Just Me",
@@ -65,14 +63,9 @@ const MentorDetail: React.FC = () => {
         { label: "2", value: 10, percentage: "7%" },
         { label: "1", value: 5, percentage: "3%" }
       ]
-    },
-    schedule: {
-      availableDays: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-      unavailableDays: ["Wed"],
-      availableTimes: ["09:00 AM", "11:00 AM", "01:00 PM", "03:00 PM", "05:00 PM", "07:00 PM"]
     }
   };
-  
+
   const data = mentorData ? {
     ...sampleData,
     id: mentorData.id,
@@ -83,8 +76,7 @@ const MentorDetail: React.FC = () => {
     bio: [mentorData.description || sampleData.bio[0], ...sampleData.bio.slice(1)],
     rating: sampleData.rating,
     reviewCount: sampleData.reviewCount,
-    ratings: sampleData.ratings,
-    schedule: sampleData.schedule
+    ratings: sampleData.ratings
   } : sampleData;
 
   if (loading) return <div>Loading...</div>;
@@ -93,33 +85,30 @@ const MentorDetail: React.FC = () => {
   return (
     <MentorDetailLayout>
       <MentorHeroBanner profileImage={data.profileImage} />
-      
-      <MentorProfileHeader 
+
+      <MentorProfileHeader
         name={data.name}
         rating={data.rating}
         reviewCount={data.reviewCount}
         university={data.university}
         title={data.title}
       />
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-        <MentorAboutSection 
-          bio={data.bio}
-          ratings={data.ratings}
-        />
-        
-        <MentorScheduleSection 
-          selectedDay={selectedDay}
-          setSelectedDay={setSelectedDay}
-          selectedTime={selectedTime}
-          setSelectedTime={setSelectedTime}
-          availableDays={data.schedule.availableDays}
-          availableTimes={data.schedule.availableTimes}
-          unavailableDays={data.schedule.unavailableDays}
-        />
+
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <MentorAboutSection
+              bio={data.bio}
+              ratings={data.ratings}
+            />
+          </div>
+          <div>
+            {mentorId > 0 && <MentorScheduleContainer mentorId={mentorId} />}
+          </div>
+        </div>
       </div>
-      
-      <BackButton 
+
+      <BackButton
         label="Back to Mentor List"
         onClick={handleBackToList}
       />
