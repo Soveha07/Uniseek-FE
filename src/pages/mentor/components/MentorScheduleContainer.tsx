@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getMentorSchedule, bookMentorSession } from '../../../api/mentor/MentorSchedule';
 import { formatTime } from '../../../helpers/timeFormat';
+import { bookMentor } from '../../../services/booking/bookingService';
 
 interface MentorScheduleContainerProps {
   mentorId: number;
@@ -11,7 +12,7 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
   const [bookingLoading, setBookingLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [availableDays, setAvailableDays] = useState<string[]>([]);
-  const [timesByDay, setTimesByDay] = useState<{[day: string]: string[]}>({});
+  const [timesByDay, setTimesByDay] = useState<{ [day: string]: string[] }>({});
   const [unavailableDays, setUnavailableDays] = useState<string[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('');
@@ -22,7 +23,7 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
       setLoading(true);
       try {
         const scheduleData = await getMentorSchedule(mentorId);
-        
+
         if (scheduleData.availableDays.length > 0) {
           setAvailableDays(scheduleData.availableDays);
 
@@ -30,10 +31,10 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
 
           const firstDay = scheduleData.availableDays[0];
           setSelectedDay(firstDay);
-          
+
           if (scheduleData.availableTimes[firstDay]) {
             setAvailableTimes(scheduleData.availableTimes[firstDay]);
-            
+
             if (scheduleData.availableTimes[firstDay].length > 0) {
               setSelectedTime(scheduleData.availableTimes[firstDay][0]);
             }
@@ -73,7 +74,8 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
 
     setBookingLoading(true);
     try {
-      await bookMentorSession(mentorId, selectedDay, selectedTime);
+      // These are the values being passed
+      await bookMentor(mentorId, selectedDay, selectedTime);
       alert(`Session booked successfully for ${selectedDay} at ${selectedTime}`);
     } catch (error) {
       console.error('Booking error:', error);
@@ -82,6 +84,7 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
       setBookingLoading(false);
     }
   };
+
 
   if (loading) {
     return (
@@ -204,7 +207,7 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
         </div>
       </div>
 
-      <button 
+      <button
         className="w-full mt-6 px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition flex items-center justify-center gap-2"
         onClick={handleBookSession}
         disabled={!selectedDay || !selectedTime || bookingLoading}

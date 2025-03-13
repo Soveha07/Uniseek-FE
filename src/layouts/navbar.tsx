@@ -45,6 +45,7 @@ const NavBar: React.FC = () => {
                   { name: "Home", path: "/home" },
                   { name: "Mentor", path: "/mentors" },
                   { name: "University", path: "/universities" },
+                  { name: "Booking", path: "/bookings" },
                   { name: "Profile", path: "/profile" },
                 ].map(({ name, path }, index) => (
                   <li key={index} className="md:relative">
