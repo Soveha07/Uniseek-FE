@@ -12,19 +12,19 @@ export interface MentorSchedule {
 
 // Define interfaces for the nested response structure
 interface ApiResponseData {
-  status: string;
+  status: number;
   timestamp: string;
   data: MentorSchedule;
 }
 
 interface ApiResponse {
-  status: string;
+  status: number;
   timestamp: string;
   data: ApiResponseData;
 }
 
 interface BookingResponse {
-  status: string;
+  status: number;
   timestamp: string;
   data: { bookingId: number };
 }

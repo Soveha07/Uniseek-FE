@@ -6,6 +6,7 @@ import { submitSurvey } from '../../services/survey/surveyService';
 import Loading from '../../components/common/Loading';
 import { useNavigate } from 'react-router-dom';
 import { University } from '../../interfaces/university.interface';
+import SuccessModal from '../../components/common/SuccessModal';
 
 type AnswerValue = string | string[] | null;
 interface Answers {
@@ -13,6 +14,8 @@ interface Answers {
 }
 
 const Survey: React.FC = () => {
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<string>('');
   const navigate = useNavigate();
   const [apiResponse, setApiResponse] = useState<University[]>();
   const userUID = localStorage.getItem("userID");
@@ -93,9 +96,13 @@ const Survey: React.FC = () => {
         const response = await submitSurvey(payload);
         setApiResponse(response);
         localStorage.setItem("universities", JSON.stringify(response));
-        alert('Survey submitted successfully!');
-        console.log("Navigating with universities:", response);
-        navigate('/uniRecommendation', { state: { universities: response } });
+        // alert('Survey submitted successfully!');
+        setSuccessMessage('Survey submitted successfully! You will see your university recommendations shortly.');
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          console.log("Navigating with universities:", response);
+          navigate('/uniRecommendation', { state: { universities: response } });
+        }, 5000); // 2-second delay to allow modal to display
       } catch (error) {
         alert('Failed to submit survey. Please try again.');
         console.log(error);
@@ -175,6 +182,10 @@ const Survey: React.FC = () => {
           </button>
         </div>
       </div>
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <SuccessModal message={successMessage} onClose={() => setShowSuccessModal(false)} />
+      )}
     </div>
   );
 };

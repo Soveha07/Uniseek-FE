@@ -2,21 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { getMentorSchedule, bookMentorSession } from '../../../api/mentor/MentorSchedule';
 import { formatTime } from '../../../helpers/timeFormat';
 import { bookMentor } from '../../../services/booking/bookingService';
+import ErrorModal from '../../../components/common/ErrorModal';
+import Loading from '../../../components/common/Loading';
 
 interface MentorScheduleContainerProps {
   mentorId: number;
+  setError: React.Dispatch<React.SetStateAction<string | null>>;  // Add these two props
+  setShowErrorModal: React.Dispatch<React.SetStateAction<boolean>>;
+  onSuccess: (message: string) => void;
+
 }
 
-const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mentorId }) => {
+const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({
+  mentorId,
+  setError,
+  setShowErrorModal,
+  onSuccess
+}) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [bookingLoading, setBookingLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const [availableDays, setAvailableDays] = useState<string[]>([]);
   const [timesByDay, setTimesByDay] = useState<{ [day: string]: string[] }>({});
   const [unavailableDays, setUnavailableDays] = useState<string[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
+  // const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchSchedule = async () => {
@@ -76,10 +88,13 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
     try {
       // These are the values being passed
       await bookMentor(mentorId, selectedDay, selectedTime);
-      alert(`Session booked successfully for ${selectedDay} at ${selectedTime}`);
-    } catch (error) {
+      // alert(`Session booked successfully for ${selectedDay} at ${selectedTime}`);
+      onSuccess(`Session successfully booked for ${selectedDay} at ${formatTime(selectedTime)}`);
+    } catch (error: any) {
       console.error('Booking error:', error);
-      alert(`Failed to book session: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setError(error.message);
+      setShowErrorModal(true);
+      // alert(`Failed to book session: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setBookingLoading(false);
     }
@@ -88,26 +103,10 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
 
   if (loading) {
     return (
-      <div className="bg-white p-6 rounded-xl shadow-md">
-        <div className="flex justify-center items-center h-40">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
-        </div>
-      </div>
+      <Loading></Loading>
     );
   }
 
-  if (error) {
-    return (
-      <div className="bg-white p-6 rounded-xl shadow-md">
-        <div className="text-red-500 text-center">
-          <svg className="w-10 h-10 mx-auto text-red-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p>{error}</p>
-        </div>
-      </div>
-    );
-  }
 
   if (availableDays.length === 0) {
     return (
@@ -220,6 +219,7 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
           'Book Your Session'
         )}
       </button>
+
     </div>
   );
 };

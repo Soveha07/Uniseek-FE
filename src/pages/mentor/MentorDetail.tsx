@@ -8,6 +8,8 @@ import BackButton from "./components/BackButton";
 import { getMentorById } from "../../api/mentor/GetMentorById";
 import MentorScheduleContainer from './components/MentorScheduleContainer';
 import Loading from "../../components/common/Loading";
+import ErrorModal from "../../components/common/ErrorModal";
+import SuccessModal from "../../components/common/SuccessModal";
 
 const MentorDetail: React.FC = () => {
   const navigate = useNavigate();
@@ -16,6 +18,9 @@ const MentorDetail: React.FC = () => {
   const [mentorData, setMentorData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<string>('');
 
   useEffect(() => {
     const fetchMentor = async () => {
@@ -81,7 +86,6 @@ const MentorDetail: React.FC = () => {
   } : sampleData;
 
   if (loading) return <Loading></Loading>;
-  if (error) return <div>Error: {error}</div>;
 
   return (
     <MentorDetailLayout>
@@ -104,7 +108,15 @@ const MentorDetail: React.FC = () => {
             />
           </div>
           <div>
-            {mentorId > 0 && <MentorScheduleContainer mentorId={mentorId} />}
+            {mentorId > 0 && <MentorScheduleContainer
+              mentorId={mentorId}
+              setError={setError}
+              setShowErrorModal={setShowErrorModal}
+              onSuccess={(message: string) => {
+                setSuccessMessage(message);
+                setShowSuccessModal(true);
+              }}
+            />}
           </div>
         </div>
       </div>
@@ -113,6 +125,15 @@ const MentorDetail: React.FC = () => {
         label="Back to Mentor List"
         onClick={handleBackToList}
       />
+      {/* Show error modal here */}
+      {showErrorModal && error && (
+        <ErrorModal message={error} onClose={() => setShowErrorModal(false)} />
+      )}
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <SuccessModal message={successMessage} onClose={() => setShowSuccessModal(false)} />
+      )}
     </MentorDetailLayout>
   );
 };

@@ -6,7 +6,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3008';
 
 // Define API response interface
 interface ApiResponse {
-  status: string;
+  status: number;
   data: any;
   total?: number;
   page?: number;

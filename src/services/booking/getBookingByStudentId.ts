@@ -14,13 +14,24 @@ export const fetchStudentBookings = async (studentId: any) => {
                 'Content-Type': 'application/json',
             }
         });
+
+        if (response.data?.status === StatusCodes.Forbidden || !token) {
+            throw new Error('Please login to see your bookings');
+        }
+
         if (response.data?.status !== StatusCodes.Success || !response.data.data) {
             throw new Error("Error getting bookings");
         }
 
         return response.data.data; // Extracting only the bookings array
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error fetching student bookings:', error);
-        throw error;
+        if (error.response) {
+            if (error.response.status === 403) {
+                throw new Error('Please login to see your bookings');
+            } else {
+                throw new Error(error.response.data?.message || 'An unexpected error occurred.');
+            }
+        }
     }
 };

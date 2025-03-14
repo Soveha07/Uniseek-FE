@@ -6,6 +6,7 @@ import { Button } from '../../components/booking/button';
 import { formatTime } from '../../helpers/timeFormat';
 import { formatDateTime } from '../../helpers/dateTimeFormat';
 import { Booking } from '../../interfaces/booking.interface';
+import ErrorModal from '../../components/common/ErrorModal';
 
 // interface Booking {
 //     id: number;
@@ -35,6 +36,7 @@ const BookingsPage = () => {
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
     const studentId = localStorage.getItem('userID');
 
     useEffect(() => {
@@ -45,9 +47,11 @@ const BookingsPage = () => {
             try {
                 const data = await fetchStudentBookings(studentId);
                 setBookings(data);
-            } catch (error) {
+            } catch (error: any) {
                 console.error('Failed to load bookings:', error);
-                setError('Failed to fetch bookings. Please try again later.');
+                setError(error.message);
+                setShowErrorModal(true);
+
             } finally {
                 setLoading(false);
             }
@@ -58,7 +62,7 @@ const BookingsPage = () => {
 
     if (loading) return <Loading></Loading>;
 
-    if (error) return <p className="text-center text-red-500">{error}</p>;
+    // if (error) return <p className="text-center text-red-500">{error}</p>;
 
     return (
         <div className="p-6">
@@ -93,6 +97,11 @@ const BookingsPage = () => {
                         </Card>
                     ))}
                 </div>
+            )}
+
+            {/* Error Modal */}
+            {showErrorModal && error && (
+                <ErrorModal message={error} onClose={() => setShowErrorModal(false)} />
             )}
         </div>
     );
