@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { StatusCodes } from '../../enums/statusCodes';
 
 // Define the base API URL
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3008';
@@ -16,9 +17,9 @@ interface ApiResponse {
 export interface Mentor {
   id: number;
   fullName: string;
-  name?: string; 
+  name?: string;
   universityName: string;
-  university?: string; 
+  university?: string;
   majorName: string;
   major?: string;
   profileUrl?: string;
@@ -31,7 +32,7 @@ export interface Mentor {
 
 // Process mentors array helper function
 const processMentorsArray = (
-  mentorsArray: any[], 
+  mentorsArray: any[],
   responseData: any
 ): { mentorsData: Mentor[], total: number } => {
   const mentorsData = mentorsArray.map((mentor: any) => ({
@@ -49,9 +50,9 @@ const processMentorsArray = (
     phoneNumber: mentor.phone_number || mentor.phoneNumber || '',
     telegramLink: mentor.telegram_link || mentor.telegramLink || ''
   }));
-  
+
   const total = responseData.total || mentorsArray.length;
-  
+
   return { mentorsData, total };
 };
 
@@ -65,13 +66,13 @@ export const getMentors = async (page = 1, limit = 10): Promise<{ mentors: Mento
         _t: new Date().getTime()
       }
     });
-    
+
     let mentorsData: Mentor[] = [];
     let total = response.data.total || 0;
-    
+
     const responseData = response.data as any;
-    
-    if (responseData && responseData.status === 'success') {
+
+    if (responseData && responseData.status === StatusCodes.Success) {
       if (responseData.data && Array.isArray(responseData.data)) {
         const result = processMentorsArray(responseData.data, responseData);
         mentorsData = result.mentorsData;
@@ -95,7 +96,7 @@ export const getMentors = async (page = 1, limit = 10): Promise<{ mentors: Mento
       else if (responseData.data && typeof responseData.data === 'object') {
         const potentialArrayProps = Object.entries(responseData.data)
           .find(([_, value]) => Array.isArray(value));
-        
+
         if (potentialArrayProps) {
           const result = processMentorsArray(potentialArrayProps[1] as any[], responseData);
           mentorsData = result.mentorsData;
@@ -106,11 +107,11 @@ export const getMentors = async (page = 1, limit = 10): Promise<{ mentors: Mento
           total = result.total;
         }
       }
-      
+
       total = responseData.total || total;
       console.log('Found total count in API response:', total);
     }
-    
+
     return { mentors: mentorsData, total };
   } catch (error) {
     console.error('Failed to fetch mentors:', error);
@@ -123,8 +124,8 @@ export const getMentorById = async (id: number): Promise<Mentor | null> => {
   try {
     const response = await axios.get<ApiResponse>(`${API_BASE_URL}/mentors/${id}`);
     const responseData = response.data as any;
-    
-    if (responseData && responseData.status === 'success') {
+
+    if (responseData && responseData.status === StatusCodes.Success) {
       const mentorData = responseData.data;
 
       return {
@@ -143,7 +144,7 @@ export const getMentorById = async (id: number): Promise<Mentor | null> => {
         telegramLink: mentorData.telegram_link || mentorData.telegramLink || ''
       };
     }
-    
+
     return null;
   } catch (error) {
     console.error(`Failed to fetch mentor with ID ${id}:`, error);

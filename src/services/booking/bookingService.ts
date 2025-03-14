@@ -8,11 +8,11 @@ export const bookMentor = async (mentorId: number, day: string, time: string) =>
     const studentId = localStorage.getItem('userID');
 
     if (!token) {
-        throw new Error('Access token not found. Please log in.');
+        throw new Error('Please log in.');
     }
 
     if (!studentId) {
-        throw new Error('User ID not found. Please log in.');
+        throw new Error('Please log in.');
     }
 
     const payload = {

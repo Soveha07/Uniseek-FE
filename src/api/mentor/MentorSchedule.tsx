@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { StatusCodes } from '../../enums/statusCodes';
 
 const API_URL = 'http://localhost:3008/mentors';
 export interface MentorSchedule {
@@ -39,23 +40,23 @@ export const getMentorSchedule = async (mentorId: number): Promise<MentorSchedul
     const response = await axios.get<ApiResponse | ApiResponseData>(`${API_URL}/${mentorId}/schedule`);
     console.log('Raw API response:', response);
     const responseData = response.data as any;
-    
-    if (responseData?.status === 'success') {
-      if (responseData.data?.status === 'success' && responseData.data.data) {
+
+    if (responseData?.status === StatusCodes.Success) {
+      if (responseData.data?.status === StatusCodes.Success && responseData.data.data) {
         return responseData.data.data;
       } else if (responseData.data) {
         return responseData.data;
       }
     }
-    
+
     console.error('Invalid response format:', responseData);
     throw new Error('Invalid response format');
-  } catch (error: any) { 
+  } catch (error: any) {
     console.error('Error fetching mentor schedule:', error);
     if (error.response) {
       console.error('Response error data:', error.response.data);
       console.error('Response error status:', error.response.status);
-      
+
       const status = error.response.status;
       if (status === 404) {
         throw new Error('Mentor not found or has no schedule available');
@@ -83,8 +84,8 @@ export const getMentorSchedule = async (mentorId: number): Promise<MentorSchedul
  * @returns Promise resolving to the booking confirmation
  */
 export const bookMentorSession = async (
-  mentorId: number, 
-  day: string, 
+  mentorId: number,
+  day: string,
   time: string
 ): Promise<{ bookingId: number }> => {
   try {
@@ -92,14 +93,14 @@ export const bookMentorSession = async (
       day,
       time,
     });
-    
+
     if (response.data && response.data.data) {
       return response.data.data;
     }
     throw new Error('Invalid booking response format');
   } catch (error: any) {
     console.error('Error booking mentor session:', error);
-    
+
     if (error.response) {
       const status = error.response.status;
       if (status === 400) {
