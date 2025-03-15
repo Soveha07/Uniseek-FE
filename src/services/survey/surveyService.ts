@@ -2,13 +2,14 @@ import axios from 'axios';
 import { CONFIG } from '../../config';
 import { University } from '../../interfaces/university.interface';
 import { ApiResponse } from '../../interfaces/response.interface';
+import { StatusCodes } from '../../enums/statusCodes';
 
 const API_BASE_URL = CONFIG.API_URL;
 
 export const submitSurvey = async (surveyData: any): Promise<University[]> => {
     try {
         const response = await axios.post<ApiResponse<University[]>>(`${API_BASE_URL}/survey-responses`, surveyData);
-        if (response.data?.status !== "success" || !response.data.data) {
+        if (response.data?.status !== StatusCodes.Success || !response.data.data) {
             throw new Error("Error submitting survey");
         }
 

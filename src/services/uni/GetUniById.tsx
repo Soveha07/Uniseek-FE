@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { CONFIG } from '../../config';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3008';
+const API_BASE_URL = CONFIG.API_URL;
 
 // Add Major interface
 export interface Major {

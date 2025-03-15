@@ -1,22 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { getMentorSchedule, bookMentorSession } from '../../../api/mentor/MentorSchedule';
-import { formatTime } from '../../../helpers/timeFormat';
-import { bookMentor } from '../../../services/booking/bookingService';
+import { getMentorSchedule, bookMentorSession } from '../../services/mentor/MentorSchedule';
+import { formatTime } from '../../helpers/timeFormat';
+import { bookMentor } from '../../services/booking/bookingService';
+import ErrorModal from '../common/ErrorModal';
+import Loading from '../common/Loading';
 
 interface MentorScheduleContainerProps {
   mentorId: number;
+  setError: React.Dispatch<React.SetStateAction<string | null>>;  // Add these two props
+  setShowErrorModal: React.Dispatch<React.SetStateAction<boolean>>;
+  onSuccess: (message: string) => void;
+
 }
 
-const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mentorId }) => {
+const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({
+  mentorId,
+  setError,
+  setShowErrorModal,
+  onSuccess
+}) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [bookingLoading, setBookingLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const [availableDays, setAvailableDays] = useState<string[]>([]);
   const [timesByDay, setTimesByDay] = useState<{ [day: string]: string[] }>({});
   const [unavailableDays, setUnavailableDays] = useState<string[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
+  // const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchSchedule = async () => {
@@ -76,10 +88,13 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
     try {
       // These are the values being passed
       await bookMentor(mentorId, selectedDay, selectedTime);
-      alert(`Session booked successfully for ${selectedDay} at ${selectedTime}`);
-    } catch (error) {
+      // alert(`Session booked successfully for ${selectedDay} at ${selectedTime}`);
+      onSuccess(`Session successfully booked for ${selectedDay} at ${formatTime(selectedTime)}`);
+    } catch (error: any) {
       console.error('Booking error:', error);
-      alert(`Failed to book session: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setError(error.message);
+      setShowErrorModal(true);
+      // alert(`Failed to book session: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setBookingLoading(false);
     }
@@ -88,30 +103,14 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
 
   if (loading) {
     return (
-      <div className="bg-white p-6 rounded-xl shadow-md">
-        <div className="flex justify-center items-center h-40">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
-        </div>
-      </div>
+      <Loading></Loading>
     );
   }
 
-  if (error) {
-    return (
-      <div className="bg-white p-6 rounded-xl shadow-md">
-        <div className="text-red-500 text-center">
-          <svg className="w-10 h-10 mx-auto text-red-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p>{error}</p>
-        </div>
-      </div>
-    );
-  }
 
   if (availableDays.length === 0) {
     return (
-      <div className="bg-white p-6 rounded-xl shadow-md">
+      <div className="p-6 rounded-xl shadow-md border border-gray-200">
         <div className="text-gray-500 text-center">
           <svg className="w-10 h-10 mx-auto text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -191,7 +190,7 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
       </div>
 
       {/* Session info */}
-      <div className="mt-6 p-4 bg-white rounded-lg border border-blue-100">
+      <div className="mt-6 p-4 rounded-lg border border-blue-100">
         <h4 className="font-semibold text-blue-800 mb-2">Your session</h4>
         <div className="flex justify-between text-sm mb-1">
           <span className="text-gray-600">Day:</span>
@@ -220,6 +219,7 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({ mento
           'Book Your Session'
         )}
       </button>
+
     </div>
   );
 };

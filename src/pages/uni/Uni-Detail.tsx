@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../components/common/Header";
-import BackButton from "./components/BackButton";
-import UniversityBanner from "./components/UniversityBanner";
-import UniversityHeader from "./components/UniversityHeader";
-import UniversityAbout from "./components/UniversityAbout";
-import UniversityQuickInfo from "./components/UniversityQuickInfo";
-import UniversityAdditionalInfo from "./components/UniversityAdditionalInfo";
-import { getUniversityById, University } from "../../api/uni/GetUniById";
+import BackButton from "../../components/universities/BackButton";
+import UniversityBanner from "../../components/universities/UniversityBanner";
+import UniversityHeader from "../../components/universities/UniversityHeader";
+import UniversityAbout from "../../components/universities/UniversityAbout";
+import UniversityQuickInfo from "../../components/universities/UniversityQuickInfo";
+import UniversityAdditionalInfo from "../../components/universities/UniversityAdditionalInfo";
+import { getUniversityById, University } from "../../services/uni/GetUniById";
 import Loading from "../../components/common/Loading";
 
 const UniversityDetail: React.FC = () => {
@@ -67,7 +67,7 @@ const UniversityDetail: React.FC = () => {
           <div className="bg-white rounded-lg shadow-md p-6 mt-4">
             <h2 className="text-red-500 text-xl font-bold mb-4">Error</h2>
             <p className="text-gray-700">{error || "University not found"}</p>
-            <button 
+            <button
               onClick={handleBackToList}
               className="mt-6 bg-blue-600 text-white font-medium py-2 px-6 rounded-full hover:bg-blue-700 transition"
             >
@@ -84,12 +84,12 @@ const UniversityDetail: React.FC = () => {
       <div className="container mx-auto py-6 px-4 md:px-6 lg:max-w-none lg:px-8">
         <Header />
 
-        <UniversityBanner 
+        <UniversityBanner
           photoUrl={university.photo_url}
           name={university.name}
         />
-        
-        <UniversityHeader 
+
+        <UniversityHeader
           name={university.name}
           universityType={university.university_type}
           location={university.location}
@@ -99,7 +99,7 @@ const UniversityDetail: React.FC = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          <UniversityAbout 
+          <UniversityAbout
             name={university.name}
             description={university.description}
             totalEnrollment={university.total_enrollment}
@@ -109,8 +109,8 @@ const UniversityDetail: React.FC = () => {
             shift={university.shift}
             facility={university.facility}
           />
-          
-          <UniversityQuickInfo 
+
+          <UniversityQuickInfo
             location={university.location}
             minPrice={university.min_price}
             maxPrice={university.max_price}
@@ -120,14 +120,14 @@ const UniversityDetail: React.FC = () => {
             exchange={university.exchange}
           />
 
-          <UniversityAdditionalInfo 
+          <UniversityAdditionalInfo
             facility={university.facility}
             universityMajors={university.universityMajors || []}
             universityId={university.id}
           />
         </div>
-        
-        <BackButton 
+
+        <BackButton
           label="Back to Universities"
           onClick={handleBackToList}
         />

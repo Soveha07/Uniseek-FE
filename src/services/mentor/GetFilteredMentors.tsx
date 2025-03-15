@@ -1,6 +1,7 @@
 import axios from "axios";
+import { CONFIG } from "../../config";
 
-const API_URL = "http://localhost:3008/mentors";
+const API_BASE_URL = CONFIG.API_URL;
 
 // Define the Mentor interface and export it
 export interface Mentor {
@@ -28,15 +29,15 @@ export interface Mentor {
 
 export const getFilteredMentors = async (majorId: number, universityId: number): Promise<Mentor[]> => {
   try {
-    const response = await axios.get(`${API_URL}/filter`, {
+    const response = await axios.get(`${API_BASE_URL}/mentors/filter`, {
       params: {
         majorId,
         universityId
       }
     });
-    
+
     const responseData = response.data as any;
-    
+
     if (responseData?.data?.data && Array.isArray(responseData.data.data)) {
       return responseData.data.data;
     } else if (responseData?.data && Array.isArray(responseData.data)) {
@@ -44,7 +45,7 @@ export const getFilteredMentors = async (majorId: number, universityId: number):
     } else if (Array.isArray(responseData)) {
       return responseData;
     }
-    
+
     return [];
   } catch (error) {
     throw new Error(

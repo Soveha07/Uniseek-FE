@@ -66,6 +66,15 @@ const Login: React.FC = () => {
                             SIGN UP</span>
                     </p>
                 </div>
+                <div className="flex items-center justify-center w-[200px] h-[56px] mx-auto my-auto mt-1">
+                    <hr className="flex-grow border-t border-gray-300" />
+                    {/* <span className="mx-4 text-gray-500">or</span> */}
+                    <hr className="flex-grow border-t border-gray-300" />
+                </div>
+                <p className="mt-1">Are you a mentor?&nbsp;
+                    <span className="font-bold cursor-pointer text-myprimary" onClick={handleSignUpClick}>
+                        SIGN IN</span>
+                </p>
             </div>
         </div>
     )

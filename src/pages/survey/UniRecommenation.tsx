@@ -44,7 +44,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../../components/common/Header";
 import UniversityListLayout from "../../layouts/uni/UniListLayout";
 import Pagination from "../../components/common/Pagination";
-import { getAllUniversities, formatPriceRange, University } from "../../api/uni/Uni-List-API";
+import { getAllUniversities, formatPriceRange, University } from "../../services/uni/Uni-List-API";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const UniversityList: React.FC = () => {

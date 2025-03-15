@@ -1,7 +1,7 @@
 // Not using this currently, substitute this with MentorScheduleContainer
 // NOTE* THIS FILE IS NOT BEING USED
 import React from 'react';
-import { formatTime } from '../../../helpers/timeFormat';
+import { formatTime } from '../../helpers/timeFormat';
 
 interface MentorScheduleSectionProps {
   selectedDay: string;

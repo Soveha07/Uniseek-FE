@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getFilteredMentors, Mentor } from '../../api/mentor/GetFilteredMentors';
+import { getFilteredMentors, Mentor } from '../../services/mentor/GetFilteredMentors';
 
 
 interface MentorCardProps {
@@ -66,7 +66,7 @@ const MajorMentors: React.FC<MentorCardProps> = ({ id }) => {
 
       {mentors.length === 0 ? (
         <div className="bg-blue-50 p-6 rounded-lg shadow-sm border border-blue-100 text-center">
-          <p className="text-blue-700">No mentors found for this university's major.</p>
+          <p className="text-blue-700 bg-blue-50">No mentors found for this university's major.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
