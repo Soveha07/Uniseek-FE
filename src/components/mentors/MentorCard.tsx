@@ -37,7 +37,7 @@ const MentorCard: React.FC<MentorCardProps> = ({ id, name, university, major, im
       </div>
 
       {/* Detail button */}
-      <div className="absolute bottom-[-14px] right-4">
+      <div className="absolute bottom-[-14px] right-0">
         <button
           onClick={handleDetailClick}
           className="bg-blue-600 text-white text-sm font-semibold px-5 py-2 rounded-full shadow-md hover:bg-blue-700 transition"
