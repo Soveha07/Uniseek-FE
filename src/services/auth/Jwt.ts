@@ -2,9 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import { CONFIG } from '../../config';
 import axios from "axios";
 import { log } from 'console';
+import { StatusCodes } from '../../enums/statusCodes';
 
 interface LoginResponse {
-    status: string;
+    status: number;
     data: {
         userId: string;
         accessToken: string;
@@ -49,7 +50,7 @@ export const useJwtAuthActions = () => {
             });
 
             // Ensure the response has the expected structure
-            if (response.data?.status !== "success" || !response.data.data) {
+            if (response.data?.status !== StatusCodes.Success || !response.data.data) {
                 throw new Error("Unexpected response structure");
             }
 
@@ -124,7 +125,7 @@ export const useJwtAuthActions = () => {
             const response = await axios.post<LoginResponse>(`${CONFIG.API_URL}/student/create`, userData);
 
             // Ensure the response has the expected structure
-            if (response.data?.status !== "success" || !response.data.data) {
+            if (response.data?.status !== StatusCodes.Success || !response.data.data) {
                 throw new Error("Unexpected response structure");
             }
 
