@@ -15,6 +15,10 @@ export const fetchStudentBookings = async (studentId: any) => {
             }
         });
 
+        if (!studentId) {
+            throw new Error('Student ID is required to fetch bookings');
+        }
+
         if (response.data?.status === StatusCodes.Forbidden || !token) {
             throw new Error('Please login to see your bookings');
         }

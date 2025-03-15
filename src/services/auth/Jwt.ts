@@ -133,7 +133,7 @@ export const useJwtAuthActions = () => {
 
             alert("You have successfully created the account!");
             // Store retrieved data in localStorage
-            localStorage.setItem("userId", userId);
+            localStorage.setItem("userID", userId);
             localStorage.setItem("token", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
             localStorage.setItem("isLoggedIn", "true");
