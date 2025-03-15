@@ -1,5 +1,5 @@
 import React from "react";
-import UniversityCard, { UniversityCardDesktop } from "../../pages/uni/components/Uni-Card";
+import UniversityCard, { UniversityCardDesktop } from "../../components/universities/Uni-Card";
 
 interface University {
   id: number;

@@ -3,7 +3,7 @@ import Header from "../../components/common/Header";
 import MentorListLayout from "../../layouts/mentor/MentorListLayout";
 import Pagination from "../../components/common/Pagination";
 import { useNavigate } from "react-router-dom";
-import { getMentors, Mentor as ApiMentor } from "../../api/mentor/GetMentors";
+import { getMentors, Mentor as ApiMentor } from "../../services/mentor/GetMentors";
 import Loading from "../../components/common/Loading";
 
 // Fallback data 

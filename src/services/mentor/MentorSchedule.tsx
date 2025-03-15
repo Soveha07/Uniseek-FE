@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { StatusCodes } from '../../enums/statusCodes';
+import { CONFIG } from '../../config';
 
 const API_URL = 'http://localhost:3008/mentors';
+const API_BASE_URL = CONFIG.API_URL;
+
 export interface MentorSchedule {
   mentorId: number;
   availableDays: string[];
@@ -36,7 +39,7 @@ interface BookingResponse {
  */
 export const getMentorSchedule = async (mentorId: number): Promise<MentorSchedule> => {
   try {
-    console.log(`Making API request to ${API_URL}/${mentorId}/schedule`);
+    console.log(`Making API request to ${API_BASE_URL}/mentors/${mentorId}/schedule`);
     const response = await axios.get<ApiResponse | ApiResponseData>(`${API_URL}/${mentorId}/schedule`);
     console.log('Raw API response:', response);
     const responseData = response.data as any;
@@ -89,7 +92,7 @@ export const bookMentorSession = async (
   time: string
 ): Promise<{ bookingId: number }> => {
   try {
-    const response = await axios.post<BookingResponse>(`${API_URL}/${mentorId}/booking`, {
+    const response = await axios.post<BookingResponse>(`${API_BASE_URL}/mentors/${mentorId}/booking`, {
       day,
       time,
     });

@@ -1,6 +1,6 @@
 import React from 'react';
-import { formatPriceRange } from '../../../api/uni/GetUniById';
-import { capitalizeFirstLetter } from '../../../helpers/capitalize';
+import { formatPriceRange } from '../../services/uni/GetUniById';
+import { capitalizeFirstLetter } from '../../helpers/capitalize';
 
 interface UniversityHeaderProps {
   name: string;

@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { StatusCodes } from '../../enums/statusCodes';
+import { CONFIG } from '../../config';
 
 // Define the base API URL
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3008';
+const API_BASE_URL = CONFIG.API_URL;
+
 
 // Define API response interface
 interface ApiResponse {

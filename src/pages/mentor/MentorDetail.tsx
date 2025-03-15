@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MentorDetailLayout from "../../layouts/mentor/MentorDetailLayout";
-import MentorHeroBanner from "./components/MentorBanner";
-import MentorProfileHeader from "./components/MentorProfile";
-import MentorAboutSection from "./components/MentorAbout";
-import BackButton from "./components/BackButton";
-import { getMentorById } from "../../api/mentor/GetMentorById";
-import MentorScheduleContainer from './components/MentorScheduleContainer';
+import MentorHeroBanner from "../../components/mentors/MentorBanner";
+import MentorProfileHeader from "../../components/mentors/MentorProfile";
+import MentorAboutSection from "../../components/mentors/MentorAbout";
+import BackButton from "../../components/mentors/BackButton";
+import { getMentorById } from "../../services/mentor/GetMentorById";
+import MentorScheduleContainer from '../../components/mentors/MentorScheduleContainer';
 import Loading from "../../components/common/Loading";
 import ErrorModal from "../../components/common/ErrorModal";
 import SuccessModal from "../../components/common/SuccessModal";

@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatPriceRange } from '../../../api/uni/GetUniById';
+import { formatPriceRange } from '../../services/uni/GetUniById';
 
 interface UniversityAboutProps {
   name: string;
@@ -23,7 +23,7 @@ const UniversityAbout: React.FC<UniversityAboutProps> = ({
   facility
 }) => {
   return (
-    <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-md transition-all hover:shadow-lg">
+    <div className="lg:col-span-2 p-6 rounded-xl shadow-md transition-all hover:shadow-lg border border-gray-200">
       <h2 className="text-lg font-semibold text-gray-800 flex items-center">
         <span className="bg-blue-100 p-1.5 rounded-lg mr-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
