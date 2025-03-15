@@ -1,17 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "../components/homepage/Button";
 import Box from "../components/homepage/Box";
 import SmallBox from "../components/homepage/SmallBox";
 import { useNavigate } from "react-router-dom";
+import Fuse from "fuse.js";
+import characters from "./characters.json";
 
 const Home: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [query, setQuery] = useState('');
+  const [modal, setModal] = useState(false);
+
+  const fuse = new Fuse(characters, {
+    keys: ['name', 'location', 'thumb'],
+    includeScore: true,
+    threshold: 0.3,
+  });
+  const results = fuse.search(query);
+  const charactersResult = results.map(result => result.item);
+
+  const handleOnSearch = ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = currentTarget;
+    setQuery(value);
+    setModal(value.trim() !== "");
+  };
+
+  const closeModal = () => setModal(false);
   const navigate = useNavigate();
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert(`Searching for: ${searchTerm}`);
-  };
 
   return (
     <>
@@ -21,11 +36,14 @@ const Home: React.FC = () => {
 
           {/* Search Bar */}
           <div className="p-6 rounded-lg shadow-md bg-myskyblue">
-            <form className="flex items-center max-w-lg mx-auto bg-myskyblue" onSubmit={handleSearch}>
+            <form
+              className="flex items-center max-w-lg mx-auto bg-myskyblue relative"
+              onSubmit={(e) => e.preventDefault()}
+            >
               <input
                 type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                value={query}
+                onChange={handleOnSearch}
                 className="border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                 placeholder="Search for universities..."
               />
@@ -35,10 +53,34 @@ const Home: React.FC = () => {
               >
                 Search
               </button>
+
+              {query && (
+                <ul className="absolute top-full left-0 w-full hover:bg-myskyblue bg-white border border-gray-300 shadow-lg z-10 max-h-60 overflow-y-auto rounded-lg">
+                  {charactersResult.length > 0 ? (
+                    charactersResult.map((character) => (
+                      <li 
+                        key={character.name} 
+                        className="p-3 hover:bg-myskyblue cursor-pointer flex items-center gap-4 transition duration-200 ease-in-out" 
+                        onClick={() => navigate(`/universities/detail/${character.id}`)}
+                      >
+
+                        <img src={character.thumb} alt={character.name} className="w-10 h-10 rounded-full shadow-md" />
+                        <div className="">
+                          <strong className="text-lg block text-gray-800">{character.name}</strong>
+                          <span className="flex justify-start text-sm text-gray-600">📍 {character.location}</span>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="p-2 text-gray-500">No results found</li>
+                  )}
+                </ul>
+              )}
             </form>
           </div>
         </div>
       </div>
+
 
       {/* How UniSeek can support u*/}
       <div className="flex flex-col items-center text-center max-w-lg mx-auto px-4 mt-10">

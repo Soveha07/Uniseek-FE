@@ -1,0 +1,26 @@
+[
+    {
+        "id": "10",
+      "name": "Cambodia Academy of Digital Technology",
+      "location": "National road 6",
+      "thumb": "/university/cadt.jpg"
+    },
+    {
+        "id": "3",
+        "name": "Paragon Internation University",
+        "location": "Toul Kork",
+        "thumb": "/university/paragon.jpg"
+    },
+    {
+        "id": "11",
+        "name": "Royal Univeristy of Phnom Penh",
+        "location": "National road 6",
+        "thumb": "/university/rupp.jpg"
+    },
+    {
+        "id": "12",
+        "name": "Institute of Technology of Cambodia",
+        "location": "National road 6",
+        "thumb": "/university/itc.png"
+    }
+  ]
