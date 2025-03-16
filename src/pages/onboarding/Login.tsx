@@ -52,10 +52,10 @@ const Login: React.FC = () => {
                         <Button className="text-white bg-myprimary" text="Sign In" />
                     </form>
                 </div>
-                <div className="flex items-center justify-center w-[368px] h-[56px] mx-auto my-auto mt-6">
-                    <hr className="flex-grow border-t border-gray-300" />
+                <div className="flex items-center justify-center w-[368px] h-[56px] mx-auto my-auto mt-3">
+                    {/* <hr className="flex-grow border-t border-gray-300" /> */}
                     <span className="mx-4 text-gray-500">or</span>
-                    <hr className="flex-grow border-t border-gray-300" />
+                    {/* <hr className="flex-grow border-t border-gray-300" /> */}
                 </div>
                 <div className="container flex flex-col items-center">
                     <div className="">
@@ -66,7 +66,7 @@ const Login: React.FC = () => {
                             SIGN UP</span>
                     </p>
                 </div>
-                <div className="flex items-center justify-center w-[200px] h-[56px] mx-auto my-auto mt-1">
+                <div className="flex items-center justify-center w-[368px] h-[56px] mx-auto my-auto mt-1">
                     <hr className="flex-grow border-t border-gray-300" />
                     {/* <span className="mx-4 text-gray-500">or</span> */}
                     <hr className="flex-grow border-t border-gray-300" />

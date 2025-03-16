@@ -19,6 +19,7 @@ import BookingsPage from "../pages/booking/booking";
 import MentorLogin from "../pages/mentor_pages/login";
 import MentorHome from "../pages/mentor_pages/home";
 import MentorNavBar from "../layouts/mentorNavBar";
+import MentorProfile from "../pages/mentor_pages/mentorProfile";
 
 const Layout: React.FC = () => (
   <>
@@ -62,6 +63,7 @@ const Routers: React.FC = () => {
         <Route path="/mentor/login" element={<MentorLogin />} />
         <Route element={<MentorLayout />}>
           <Route path="/mentor/home" element={<ProtectedRoute><MentorHome /></ProtectedRoute>} />
+          <Route path="/mentor/profile" element={<ProtectedRoute><MentorProfile /></ProtectedRoute>} />
         </Route>
         {/* ----End---- */}
 

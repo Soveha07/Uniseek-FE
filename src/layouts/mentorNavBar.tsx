@@ -44,7 +44,7 @@ const MentorNavBar: React.FC = () => {
                                 {[
                                     // { name: "Home", path: "/mentor/home" },
                                     // { name: "Booking", path: "/bookings" },
-                                    { name: "Profile", path: "/profile" },
+                                    { name: "Profile", path: "/mentor/profile" },
                                 ].map(({ name, path }, index) => (
                                     <li key={index} className="md:relative">
                                         <Link
