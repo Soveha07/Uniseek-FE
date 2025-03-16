@@ -57,7 +57,7 @@ export const useJwtAuthActions = () => {
             const { userId, accessToken, refreshToken } = response.data.data;
 
             // Store retrieved data in localStorage
-            localStorage.setItem("userId", userId);
+            localStorage.setItem("userID", userId);
             localStorage.setItem("token", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
             localStorage.setItem("isLoggedIn", "true");

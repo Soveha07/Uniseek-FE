@@ -16,10 +16,20 @@ import MentorList from "../pages/mentor/Mentor-List";
 import MentorDetail from "../pages/mentor/MentorDetail";
 import MajorMentors from "../pages/mentor/MajorMentor";
 import BookingsPage from "../pages/booking/booking";
+import MentorLogin from "../pages/mentor_pages/login";
+import MentorHome from "../pages/mentor_pages/home";
+import MentorNavBar from "../layouts/mentorNavBar";
 
 const Layout: React.FC = () => (
   <>
     <NavBar />
+    <Outlet />
+  </>
+);
+
+const MentorLayout: React.FC = () => (
+  <>
+    <MentorNavBar />
     <Outlet />
   </>
 );
@@ -40,22 +50,22 @@ const Routers: React.FC = () => {
           <Route path="/universities/:universityId/majors/:majorId/mentors" element={<MajorMentors />} />
           <Route path="/bookings" element={<BookingsPage />} />
         </Route>
+        {/* ----End---- */}
 
         {/* ----Public Routes---- */}
         <Route path="/" element={<PublicRoute><Onboard /></PublicRoute>} />
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/signup" element={<PublicRoute><SignUp /></PublicRoute>} />
-
-        {/* <Route path="/home" element={<PublicRoute><Home /></PublicRoute>} /> */}
         {/* ----End---- */}
 
-        {/* University Listing */}
-        {/* <Route path="/universities" element={<PublicRoute><UniversityList /></PublicRoute>} />
-        <Route path="/universities/detail/:id" element={<PublicRoute><UniversityDetail /></PublicRoute>} />
-        <Route path="/mentors" element={<MentorList />} />
-        <Route path="/mentors/detail" element={<MentorDetail />} /> */}
-        {/* ----Protected Routes---- */}
+        {/* Mentor Pages */}
+        <Route path="/mentor/login" element={<MentorLogin />} />
+        <Route element={<MentorLayout />}>
+          <Route path="/mentor/home" element={<ProtectedRoute><MentorHome /></ProtectedRoute>} />
+        </Route>
+        {/* ----End---- */}
 
+        {/* ----Protected Routes---- */}
         {/* ----End---- */}
       </Routes>
     </Router>

@@ -5,21 +5,17 @@ import Loading from "../../components/common/Loading";
 import { useJwtAuthActions } from "../../services/auth/Jwt";
 import Textfield from "../../components/onboarding/Textfield";
 import Button2 from "../../components/onboarding/Button2";
+import { mentorSignInWithEmailPassword } from "../../services/mentor_services/auth";
 
 
-const Login: React.FC = () => {
+const MentorLogin: React.FC = () => {
 
     // const { handleSignUpClick } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const navigate = useNavigate();
-    const { signInWithEmailPassword, signInWithGooglePopup } = useJwtAuthActions();
     const [loading, setLoading] = useState(false);
-
-    const handleSignUpClick = () => {
-        navigate("/signup");
-    };
+    const navigate = useNavigate();
 
 
     if (loading) {
@@ -33,11 +29,11 @@ const Login: React.FC = () => {
     return (
         <div className="h-screen flex items-center justify-center">
             <div className="flex flex-col items-center">
-                <h1 className="font-bold text-h3">Sign in your account</h1>
+                <h1 className="font-bold text-h3">Sign in as mentor</h1>
                 <div className="mt-10">
                     <form className="flex flex-col items-center w-full" onSubmit={(e) => {
                         e.preventDefault();
-                        signInWithEmailPassword(email, password, setLoading, setError);
+                        mentorSignInWithEmailPassword(email, password, setLoading, setError, navigate);
                     }}>
                         <p className="self-start mb-2">Email</p>
                         <Textfield name="email" className="mb-5" placeholder="ex: johnsmith@gmail.com" value={email}
@@ -52,7 +48,7 @@ const Login: React.FC = () => {
                         <Button className="text-white bg-myprimary" text="Sign In" />
                     </form>
                 </div>
-                <div className="flex items-center justify-center w-[368px] h-[56px] mx-auto my-auto mt-6">
+                {/* <div className="flex items-center justify-center w-[368px] h-[56px] mx-auto my-auto mt-6">
                     <hr className="flex-grow border-t border-gray-300" />
                     <span className="mx-4 text-gray-500">or</span>
                     <hr className="flex-grow border-t border-gray-300" />
@@ -65,19 +61,18 @@ const Login: React.FC = () => {
                         <span className="font-bold cursor-pointer text-myprimary" onClick={handleSignUpClick}>
                             SIGN UP</span>
                     </p>
-                </div>
-                <div className="flex items-center justify-center w-[200px] h-[56px] mx-auto my-auto mt-1">
+                </div> */}
+                {/* <div className="flex items-center justify-center w-[200px] h-[56px] mx-auto my-auto mt-1">
                     <hr className="flex-grow border-t border-gray-300" />
-                    {/* <span className="mx-4 text-gray-500">or</span> */}
                     <hr className="flex-grow border-t border-gray-300" />
                 </div>
                 <p className="mt-1">Are you a mentor?&nbsp;
-                    <span className="font-bold cursor-pointer text-myprimary" onClick={() => navigate("/mentor/login")}>
+                    <span className="font-bold cursor-pointer text-myprimary" onClick={handleSignUpClick}>
                         SIGN IN</span>
-                </p>
+                </p> */}
             </div>
         </div>
     )
 }
 
-export default Login;
+export default MentorLogin;
