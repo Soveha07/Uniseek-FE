@@ -41,20 +41,21 @@ api.interceptors.response.use(
 
 const PasswordResetAPI = {
   getBaseUrl: () => API_BASE_URL,
-  updatePassword: async (uid: string, newPassword: string): Promise<ResetPasswordResponse> => {
+  updatePassword: async (uid: string, newPassword: string, currentPassword?: string | null): Promise<ResetPasswordResponse> => {
     try {
       const fullUrl = `/student/update-password/${uid}`;
       console.log(`Attempting password reset request to: ${API_BASE_URL}${fullUrl}`);
-      
+
       const response = await api.post(
         fullUrl,
         {
-          password: newPassword
+          newPassword: newPassword,
+          ...(currentPassword && { currentPassword: currentPassword })
         }
       );
-      
+
       console.log("Password reset successful, response:", response.status);
-      
+
       return {
         status: response.status,
         message: "Password updated successfully"
@@ -66,11 +67,11 @@ const PasswordResetAPI = {
         console.error('Response data:', error.response.data);
         console.error('Response status:', error.response.status);
       }
-      
+
       throw error;
     }
   },
-  
+
   verifyCurrentPassword: async (uid: string, currentPassword: string): Promise<boolean> => {
     // Future Implementations
     return true;

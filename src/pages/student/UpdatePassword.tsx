@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PasswordResetAPI from "../../services/student/ResetPassword";
 
 const UserResetPw: React.FC = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
-    const [currentPassword, setCurrentPassword] = useState("");
+    const [currentPassword, setCurrentPassword] = useState<string | null>(null);
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const location = useLocation();
+    const state = location.state as { userPassword: string | null };
 
     // Password validation
     const [passwordRequirements, setPasswordRequirements] = useState({
@@ -30,10 +32,11 @@ const UserResetPw: React.FC = () => {
             special: /[^A-Za-z0-9]/.test(password)
         });
     };
+
     const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newPass = e.target.value;
         setNewPassword(newPass);
-        checkPasswordStrength(newPass);
+        // checkPasswordStrength(newPass);
     };
 
     const handleResetPassword = async (e: React.FormEvent) => {
@@ -45,11 +48,11 @@ const UserResetPw: React.FC = () => {
             return;
         }
 
-        const allRequirementsMet = Object.values(passwordRequirements).every(req => req);
-        if (!allRequirementsMet) {
-            setError("New password doesn't meet all requirements");
-            return;
-        }
+        // const allRequirementsMet = Object.values(passwordRequirements).every(req => req);
+        // if (!allRequirementsMet) {
+        //     setError("New password doesn't meet all requirements");
+        //     return;
+        // }
         if (newPassword !== confirmPassword) {
             setError("New passwords don't match");
             return;
@@ -65,9 +68,14 @@ const UserResetPw: React.FC = () => {
                 return;
             }
 
-            const response = await PasswordResetAPI.updatePassword(uid, newPassword);
+            let response;
+            if (state.userPassword !== null) {
+                response = await PasswordResetAPI.updatePassword(uid, newPassword, currentPassword);
+            } else {
+                response = await PasswordResetAPI.updatePassword(uid, newPassword);
+            }
 
-            if (response.status >= 200 && response.status < 300) {
+            if (response && response.status >= 200 && response.status < 300) {
                 setSuccess(true);
                 setError(null);
                 setCurrentPassword("");
@@ -99,49 +107,73 @@ const UserResetPw: React.FC = () => {
         </svg>
     );
 
-    return (
-        <div className="flex w-full mt-10 items-center justify-center h-auto bg-mysecondary">
-            <div className="bg-myskyblue rounded-2xl w-full max-w-sm md:max-w-md lg:max-w-lg p-6 md:p-8 shadow-lg">
-                <h1 className="text-2xl bg-myskyblue font-bold mb-2 text-center">Reset Password</h1>
-                <p className="text-gray-500 bg-myskyblue mb-6 text-center">Please set a new password</p>
+    console.log("password", state.userPassword);
 
-                {error && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-md mb-4">
-                        {error}
-                    </div>
-                )}
+    if (state.userPassword !== null) {
+        return (
+            <div className="flex w-full mt-10 items-center justify-center h-auto bg-mysecondary">
+                <div className="bg-myskyblue rounded-2xl w-full max-w-sm md:max-w-md lg:max-w-lg p-6 md:p-8 shadow-lg">
+                    <h1 className="text-2xl bg-myskyblue font-bold mb-2 text-center">Reset Password</h1>
+                    <p className="text-gray-500 bg-myskyblue mb-6 text-center">Please set a new password</p>
 
-                {success && (
-                    <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-2 rounded-md mb-4">
-                        Password successfully updated! Redirecting back to your profile...
-                    </div>
-                )}
-
-                <form onSubmit={handleResetPassword} className="flex flex-col gap-5 bg-myskyblue">
-                    <div className="flex flex-col bg-myskyblue">
-                        <label htmlFor="newpassword" className="font-medium mb-2 bg-myskyblue">
-                            New Password:
-                        </label>
-                        <div className="relative bg-myskyblue">
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                id="newpassword"
-                                value={newPassword}
-                                onChange={handleNewPasswordChange}
-                                className="rounded-md border border-gray-300 p-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                                placeholder="Enter new password"
-                            />
-                            <button
-                                type="button"
-                                className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
-                                onClick={() => setShowPassword(!showPassword)}
-                            >
-                                {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                            </button>
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-md mb-4">
+                            {error}
                         </div>
+                    )}
 
-                        {/* Password requirements */}
-                        <div className="mt-2 text-xs space-y-1">
+                    {success && (
+                        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-2 rounded-md mb-4">
+                            Password successfully updated! Redirecting back to your profile...
+                        </div>
+                    )}
+
+                    <form onSubmit={handleResetPassword} className="flex flex-col gap-5 bg-myskyblue">
+                        <div className="flex flex-col bg-myskyblue">
+                            <label htmlFor="newpassword" className="font-medium mb-2 bg-myskyblue">
+                                Current Password:
+                            </label>
+                            <div className="relative bg-myskyblue">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="currentpassword"
+                                    value={currentPassword ?? ""}
+                                    onChange={(e) => setCurrentPassword(e.target.value)}
+                                    className="rounded-md border border-gray-300 p-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                    placeholder="Enter current password"
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                                </button>
+                            </div>
+
+                            <label htmlFor="newpassword" className="font-medium mb-2 bg-myskyblue mt-3">
+                                New Password:
+                            </label>
+                            <div className="relative bg-myskyblue">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="newpassword"
+                                    value={newPassword}
+                                    onChange={handleNewPasswordChange}
+                                    className="rounded-md border border-gray-300 p-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                    placeholder="Enter new password"
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                                </button>
+                            </div>
+
+                            {/* Password requirements */}
+                            {/* <div className="mt-2 text-xs space-y-1">
                             <p className={passwordRequirements.length ? "text-green-600" : "text-gray-500"}>
                                 ✓ At least 8 characters
                             </p>
@@ -157,70 +189,196 @@ const UserResetPw: React.FC = () => {
                             <p className={passwordRequirements.special ? "text-green-600" : "text-gray-500"}>
                                 ✓ At least one special character
                             </p>
+                        </div> */}
                         </div>
-                    </div>
 
-                    <div className="flex flex-col bg-myskyblue">
-                        <label htmlFor="confirmpassword" className="font-medium mb-2 bg-myskyblue">
-                            Confirm Password:
-                        </label>
-                        <div className="relative bg-myskyblue">
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                id="confirmpassword"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                className={`rounded-md border ${confirmPassword && newPassword !== confirmPassword
+                        <div className="flex flex-col bg-myskyblue">
+                            <label htmlFor="confirmpassword" className="font-medium mb-2 bg-myskyblue">
+                                Confirm Password:
+                            </label>
+                            <div className="relative bg-myskyblue">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="confirmpassword"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    className={`rounded-md border ${confirmPassword && newPassword !== confirmPassword
                                         ? "border-red-300 focus:ring-red-500"
                                         : "border-gray-300 focus:ring-blue-500"
-                                    } p-2 pr-10 focus:outline-none focus:ring-2 w-full`}
-                                placeholder="Confirm new password"
-                            />
+                                        } p-2 pr-10 focus:outline-none focus:ring-2 w-full`}
+                                    placeholder="Confirm new password"
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                                </button>
+                            </div>
+                            {confirmPassword && newPassword !== confirmPassword && (
+                                <p className="text-red-500 text-xs mt-1">Passwords don't match</p>
+                            )}
+                        </div>
+
+                        <div className="flex justify-center bg-myskyblue mt-4">
                             <button
-                                type="button"
-                                className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
-                                onClick={() => setShowPassword(!showPassword)}
+                                type="submit"
+                                disabled={isLoading}
+                                className={`${isLoading ? "bg-blue-400" : "bg-myprimary hover:bg-blue-600"
+                                    } text-white w-48 py-3 rounded-md transition flex items-center justify-center`}
                             >
-                                {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                                {isLoading ? (
+                                    <>
+                                        Processing...
+                                    </>
+                                ) : "Save Changes"}
                             </button>
                         </div>
-                        {confirmPassword && newPassword !== confirmPassword && (
-                            <p className="text-red-500 text-xs mt-1">Passwords don't match</p>
-                        )}
-                    </div>
 
-                    <div className="flex justify-center bg-myskyblue mt-4">
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className={`${isLoading ? "bg-blue-400" : "bg-myprimary hover:bg-blue-600"
-                                } text-white w-48 py-3 rounded-md transition flex items-center justify-center`}
-                        >
-                            {isLoading ? (
-                                <>
-                                    Processing...
-                                </>
-                            ) : "Save Changes"}
-                        </button>
-                    </div>
-
-                    <div className="flex justify-baseline text-sm bg-myskyblue">
-                        <button
-                            type="button"
-                            disabled={isLoading}
-                            className="text-[#284BAD] ml-1 hover:underline bg-myskyblue"
-                            onClick={() => {
-                                const uid = localStorage.getItem('userID') || localStorage.getItem('userId') || localStorage.getItem('uid');
-                                navigate(`/userprofile/${uid}`);
-                            }}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </form>
+                        <div className="flex justify-baseline text-sm bg-myskyblue">
+                            <button
+                                type="button"
+                                disabled={isLoading}
+                                className="text-[#284BAD] ml-1 hover:underline bg-myskyblue"
+                                onClick={() => {
+                                    const uid = localStorage.getItem('userID') || localStorage.getItem('userId') || localStorage.getItem('uid');
+                                    navigate(`/userprofile/${uid}`);
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
+
+    else {
+        return (
+            <div className="flex w-full mt-10 items-center justify-center h-auto bg-mysecondary">
+                <div className="bg-myskyblue rounded-2xl w-full max-w-sm md:max-w-md lg:max-w-lg p-6 md:p-8 shadow-lg">
+                    <h1 className="text-2xl bg-myskyblue font-bold mb-2 text-center">Add Password</h1>
+                    <p className="text-gray-500 bg-myskyblue mb-6 text-center">Please set a password</p>
+
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-md mb-4">
+                            {error}
+                        </div>
+                    )}
+
+                    {success && (
+                        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-2 rounded-md mb-4">
+                            Password successfully updated! Redirecting back to your profile...
+                        </div>
+                    )}
+
+                    <form onSubmit={handleResetPassword} className="flex flex-col gap-5 bg-myskyblue">
+                        <div className="flex flex-col bg-myskyblue">
+                            <label htmlFor="newpassword" className="font-medium mb-2 bg-myskyblue">
+                                Password:
+                            </label>
+                            <div className="relative bg-myskyblue">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="newpassword"
+                                    value={newPassword}
+                                    onChange={handleNewPasswordChange}
+                                    className="rounded-md border border-gray-300 p-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                    placeholder="Enter new password"
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                                </button>
+                            </div>
+
+                            {/* Password requirements */}
+                            {/* <div className="mt-2 text-xs space-y-1">
+                        <p className={passwordRequirements.length ? "text-green-600" : "text-gray-500"}>
+                            ✓ At least 8 characters
+                        </p>
+                        <p className={passwordRequirements.uppercase ? "text-green-600" : "text-gray-500"}>
+                            ✓ At least one uppercase letter
+                        </p>
+                        <p className={passwordRequirements.lowercase ? "text-green-600" : "text-gray-500"}>
+                            ✓ At least one lowercase letter
+                        </p>
+                        <p className={passwordRequirements.number ? "text-green-600" : "text-gray-500"}>
+                            ✓ At least one number
+                        </p>
+                        <p className={passwordRequirements.special ? "text-green-600" : "text-gray-500"}>
+                            ✓ At least one special character
+                        </p>
+                    </div> */}
+                        </div>
+
+                        <div className="flex flex-col bg-myskyblue">
+                            <label htmlFor="confirmpassword" className="font-medium mb-2 bg-myskyblue">
+                                Confirm Password:
+                            </label>
+                            <div className="relative bg-myskyblue">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="confirmpassword"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    className={`rounded-md border ${confirmPassword && newPassword !== confirmPassword
+                                        ? "border-red-300 focus:ring-red-500"
+                                        : "border-gray-300 focus:ring-blue-500"
+                                        } p-2 pr-10 focus:outline-none focus:ring-2 w-full`}
+                                    placeholder="Confirm new password"
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                                </button>
+                            </div>
+                            {confirmPassword && newPassword !== confirmPassword && (
+                                <p className="text-red-500 text-xs mt-1">Passwords don't match</p>
+                            )}
+                        </div>
+
+                        <div className="flex justify-center bg-myskyblue mt-4">
+                            <button
+                                type="submit"
+                                disabled={isLoading}
+                                className={`${isLoading ? "bg-blue-400" : "bg-myprimary hover:bg-blue-600"
+                                    } text-white w-48 py-3 rounded-md transition flex items-center justify-center`}
+                            >
+                                {isLoading ? (
+                                    <>
+                                        Processing...
+                                    </>
+                                ) : "Save Changes"}
+                            </button>
+                        </div>
+
+                        <div className="flex justify-baseline text-sm bg-myskyblue">
+                            <button
+                                type="button"
+                                disabled={isLoading}
+                                className="text-[#284BAD] ml-1 hover:underline bg-myskyblue"
+                                onClick={() => {
+                                    const uid = localStorage.getItem('userID') || localStorage.getItem('userId') || localStorage.getItem('uid');
+                                    navigate(`/userprofile/${uid}`);
+                                }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )
+    }
 };
 
 export default UserResetPw;

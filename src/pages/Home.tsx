@@ -82,31 +82,31 @@ const Home: React.FC = () => {
               </button>
 
               {query && (
-                  <ul className="absolute top-full left-0 w-full border border-gray-300 shadow-lg z-10 max-h-72 overflow-y-auto rounded-lg">
-                    {universitiesResult.length > 0 ? (
-                      universitiesResult.map((university) => (
-                        <li
-                          key={university.name}
-                          className="p-3 cursor-pointer flex items-center gap-4 transition duration-200 ease-in-out"
-                          onClick={() =>
-                            navigate(`/universities/detail/${university.id}`)
-                          }
-                        >
-                          <img
+                <ul className="absolute top-full left-0 w-full border border-gray-300 shadow-lg z-10 max-h-72 overflow-y-auto rounded-lg">
+                  {universitiesResult.length > 0 ? (
+                    universitiesResult.map((university) => (
+                      <li
+                        key={university.name}
+                        className="p-3 cursor-pointer flex items-center gap-4 transition duration-200 ease-in-out"
+                        onClick={() =>
+                          navigate(`/universities/detail/${university.id}`)
+                        }
+                      >
+                        <img
                           src={`${process.env.PUBLIC_URL}/university/${university.photo_url || 'noImage.jpg'}`}
-                            alt={university.name}
-                            className="w-10 h-10 rounded-full shadow-md"
-                          />
-                          <div className="flex flex-col justify-start text-left">
-                            <strong className="text-lg text-gray-800">{university.name}</strong>
-                            <span className="text-sm text-gray-600 mt-0.5">📍 {university.location}</span>
-                          </div>
-                        </li>
-                      ))
-                    ) : (
-                      <li className="p-2 text-gray-500">No results found</li>
-                    )}
-                  </ul>
+                          alt={university.name}
+                          className="w-10 h-10 rounded-full shadow-md"
+                        />
+                        <div className="flex flex-col justify-start text-left">
+                          <strong className="text-lg text-gray-800">{university.name}</strong>
+                          <span className="text-sm text-gray-600 mt-0.5">📍 {university.location}</span>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="p-2 text-gray-500">No results found</li>
+                  )}
+                </ul>
               )}
             </form>
           </div>
@@ -180,11 +180,11 @@ const Home: React.FC = () => {
       {/* University */}
       <div className="flex flex-wrap justify-center gap-6 mt-6 mb-6">
         <Box
-          title="University Ranking 2025"
-          description="Discover the top-performing universities in Cambodia"
+          title="Choosing The Right Major"
+          description="Discover how to make the best choice in choosing the right major"
           imgPath="/homepage/uni.jpeg"
           buttonText="Explore"
-          onClick={() => alert("")}
+          onClick={() => navigate("/blog")}
         />
         <Box
           title="University Ranking by Subject 2025"

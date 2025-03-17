@@ -7,10 +7,11 @@ const UserProfile: React.FC = () => {
     const navigate = useNavigate();
     const { uid: paramUid } = useParams<{ uid: string }>();
     const [isEdit, setIsEdit] = useState(false);
-    const [name, setName] = useState("Unknown");
-    const [phoneNum, setPhoneNum] = useState("099 999 9999");
+    const [name, setName] = useState("");
+    const [phoneNum, setPhoneNum] = useState<string | null>(null);
     const [email, setEmail] = useState("unknown@gmail.com");
-    const [photoURL, setPhotoURL] = useState("/onboarding/google.png");
+    const [photoURL, setPhotoURL] = useState("/noProfile.png");
+    const [password, setPassword] = useState<string | null>(null);
     const [rawResponse, setRawResponse] = useState<any>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -48,10 +49,11 @@ const UserProfile: React.FC = () => {
 
                 if (profileResponse && profileResponse.data) {
                     const userData = profileResponse.data;
-                    setName(userData.displayName || "Unknown");
-                    setEmail(userData.email || "unknown@gmail.com");
-                    setPhoneNum(userData.phoneNumber || "099 999 9999");
-                    setPhotoURL(userData.photoURL || "/onboarding/google.png");
+                    setName(userData.displayName);
+                    setEmail(userData.email);
+                    setPhoneNum(userData.phoneNumber);
+                    setPhotoURL(userData.photoURL || "/noProfile.png");
+                    setPassword(userData.password)
                     setErrorMessage(null);
                 } else {
                     setErrorMessage("Failed to load profile data");
@@ -162,6 +164,14 @@ const UserProfile: React.FC = () => {
         }
     };
 
+    const logout = () => {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem("userID");
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken")
+        navigate("/");
+    };
+
     if (loading) {
         return <Loading />;
     }
@@ -205,9 +215,9 @@ const UserProfile: React.FC = () => {
 
             <div className="max-w-5xl mx-auto">
                 {/* Header Banner */}
-                <div className="bg-gradient-to-r from-blue-500 to-blue-700 h-36 sm:h-48 rounded-t-xl relative overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 h-36 sm:h-48 rounded-t-xl relative overflow-hidden">
                     <div className="absolute inset-0 opacity-20">
-                        <div className="h-full w-full bg-[url('https://images.unsplash.com/photo-1498050108023-c5249f4df085')] bg-cover bg-center"></div>
+                        <div className="h-full w-full bg-[url('https://t4.ftcdn.net/jpg/03/23/90/01/360_F_323900197_YRq2Lfh3LMToFyy6X2Ay6jZEN1F7Eczd.jpg')] bg-cover bg-center"></div>
                     </div>
                 </div>
 
@@ -215,8 +225,8 @@ const UserProfile: React.FC = () => {
                     {/* Profile Section */}
                     <div className="relative px-4 sm:px-8 pb-6 sm:pb-8">
                         {/* Profile Picture */}
-                        <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 sm:left-8 sm:transform-none">
-                            <div className="h-28 w-28 sm:h-32 sm:w-32 rounded-full border-4 border-white bg-white shadow-md overflow-hidden relative">
+                        <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 sm:left-8 sm:transform-none bg-transparent">
+                            <div className="h-28 w-28 sm:h-32 sm:w-32 rounded-full border-4 border-blue-600 shadow-md overflow-hidden relative">
                                 {isUploading ? (
                                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-200 bg-opacity-75">
                                         <Loading />
@@ -226,7 +236,7 @@ const UserProfile: React.FC = () => {
                                     src={photoURL}
                                     alt="Profile"
                                     className="h-full w-full object-cover"
-                                    onError={() => setPhotoURL("/onboarding/google.png")}
+                                    onError={() => setPhotoURL("/noProfile.png")}
                                 />
                             </div>
                         </div>
@@ -289,11 +299,12 @@ const UserProfile: React.FC = () => {
 
                                         <button
                                             type="button"
-                                            onClick={() => navigate("/userresetpw")}
+                                            onClick={() => navigate("/userresetpw", { state: { userPassword: password } })}
                                             className="px-4 py-2 rounded-md text-sm font-medium bg-gray-100 border border-gray-300 text-gray-700 hover:bg-gray-200 shadow-sm transform transition hover:scale-105"
                                         >
-                                            Reset Password
+                                            {password ? "Reset Password" : "Add Password"}
                                         </button>
+
                                     </>
                                 )}
                             </div>
@@ -331,7 +342,7 @@ const UserProfile: React.FC = () => {
                                     <label className="block text-sm font-medium text-gray-700">Phone Number</label>
                                     {isEdit ? (
                                         <input
-                                            value={phoneNum}
+                                            value={phoneNum ?? ""}
                                             onChange={(e) => setPhoneNum(e.target.value)}
                                             className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                                         />
@@ -347,6 +358,11 @@ const UserProfile: React.FC = () => {
                                     <div className="px-3 py-2 sm:px-4 sm:py-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-800">
                                         {email}
                                     </div>
+                                </div>
+                                <div className="flex justify-center items-center">
+                                    <button className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded" onClick={logout}>
+                                        Logout
+                                    </button>
                                 </div>
                             </div>
                         </div>

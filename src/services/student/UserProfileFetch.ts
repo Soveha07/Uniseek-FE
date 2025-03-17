@@ -12,7 +12,7 @@ interface UserData {
   provider?: string;
   createdAt?: string;
   updatedAt?: string | null;
-  password?: string | null;
+  password: string | null;
   refresh_token?: string;
   role?: string;
 }
@@ -20,7 +20,7 @@ interface UserData {
 interface UserProfileResponse {
   status: number;
   message?: string;
-  timestamp?: string; 
+  timestamp?: string;
   data: UserData;
 }
 
@@ -58,7 +58,7 @@ api.interceptors.response.use(
 
 const UserProfileAPI = {
   getBaseUrl: () => API_BASE_URL,
-  
+
   getUserProfile: async (uid: string): Promise<UserProfileResponse> => {
     try {
       console.log(`Fetching profile with uid: ${uid}`);
@@ -71,7 +71,7 @@ const UserProfileAPI = {
     }
   },
 
-  updateUserProfile: async (uid: string, userName: string, phoneNumber: string): Promise<UserProfileResponse> => {
+  updateUserProfile: async (uid: string, userName: string, phoneNumber: string | null): Promise<UserProfileResponse> => {
     try {
       const response = await api.post<UserProfileResponse>(
         `/student/update/${uid}`,
