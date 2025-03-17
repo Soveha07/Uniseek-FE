@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const NavBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [uid, setUid] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUid = localStorage.getItem('userID');
+    setUid(storedUid);
+  }, []);
 
   return (
     <nav className="sticky top-0 z-50 border-b border-gray-200 bg-gray-50 w-full">
@@ -46,7 +52,7 @@ const NavBar: React.FC = () => {
                   { name: "Mentor", path: "/mentors" },
                   { name: "University", path: "/universities" },
                   { name: "Booking", path: "/bookings" },
-                  { name: "Profile", path: "/profile" },
+                  { name: "Profile", path: uid ? `/userprofile/${uid}` : "/login" },
                 ].map(({ name, path }, index) => (
                   <li key={index} className="md:relative">
                     <Link

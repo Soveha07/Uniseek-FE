@@ -20,6 +20,8 @@ import MentorLogin from "../pages/mentor_pages/login";
 import MentorHome from "../pages/mentor_pages/home";
 import MentorNavBar from "../layouts/mentorNavBar";
 import MentorProfile from "../pages/mentor_pages/mentorProfile";
+import UserProfile from "../pages/student/UserProfile";
+import UserResetPw from "../pages/student/UpdatePassword";
 
 const Layout: React.FC = () => (
   <>
@@ -50,6 +52,8 @@ const Routers: React.FC = () => {
           <Route path="/mentors/detail/:id" element={<MentorDetail />} />
           <Route path="/universities/:universityId/majors/:majorId/mentors" element={<MajorMentors />} />
           <Route path="/bookings" element={<BookingsPage />} />
+          <Route path="/userprofile/:uid" element={<UserProfile/>}></Route>
+          <Route path="/userresetpw" element={<UserResetPw/>}></Route>
         </Route>
         {/* ----End---- */}
 
