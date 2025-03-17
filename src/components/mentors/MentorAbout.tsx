@@ -1,75 +1,176 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import ratingService, { MentorRatingsResponse, Rating } from '../../services/rating/ratingservice';
+import Loading from '../common/Loading';
 
 interface MentorAboutSectionProps {
   bio: string[];
-  ratings: {
-    average: number;
-    count: number;
-    breakdown: Array<{ label: string; value: number; percentage: string }>;
-  };
+  mentorId: number;
 }
 
-const MentorAboutSection: React.FC<MentorAboutSectionProps> = ({ bio, ratings }) => {
+const MentorAboutSection: React.FC<MentorAboutSectionProps> = ({ bio, mentorId }) => {
+  const [ratings, setRatings] = useState<MentorRatingsResponse | null>(null);
+  const [newRating, setNewRating] = useState<number>(0);
+  const [review, setReview] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showAll, setShowAll] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchRatings = async () => {
+      try {
+        const data = await ratingService.getRatingsByMentor(mentorId);
+        console.log("ratingsdata", data);
+        setRatings(data);
+      } catch (error) {
+        console.error('Error fetching ratings:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRatings();
+  }, [mentorId]);
+
+  const handleStarClick = (rating: number) => {
+    setNewRating(rating);
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (newRating < 1 || newRating > 5) {
+      alert('Rating must be between 1 and 5.');
+      return;
+    }
+
+    try {
+      const studentId = localStorage.getItem('userID') || '';
+      const ratingData: Rating = {
+        mentorId,
+        studentId,
+        rating: newRating,
+        review,
+      };
+
+      console.log(ratingData);
+
+      await ratingService.addRating(ratingData);
+      alert('Rating submitted successfully!');
+
+      const updatedRatings = await ratingService.getRatingsByMentor(mentorId);
+      setRatings(updatedRatings);
+      setNewRating(0);
+      setReview('');
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+    }
+  };
+
   return (
-    <div className="lg:col-span-2 p-6 rounded-xl shadow-md transition-all hover:shadow-lg border border-gray-200">
-      <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-        <span className="bg-blue-100 p-1.5 rounded-lg mr-2">
-          <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-            <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z" />
-          </svg>
-        </span>
-        About Me
-      </h3>
+    <div className="p-6 rounded-xl shadow-md transition-all hover:shadow-lg border border-gray-200">
+      <h3 className="text-lg font-semibold text-gray-800">About Me</h3>
       <div className="mt-4 text-gray-700 leading-relaxed">
         {bio.map((paragraph, index) => (
-          <p key={index} className={index < bio.length - 1 ? "mb-3" : "mb-6"}>
+          <p key={index} className={index < bio.length - 1 ? 'mb-3' : 'mb-6'}>
             {paragraph}
           </p>
         ))}
-        
-        <div className="mt-8 pt-6 border-t border-gray-100">
-          <h4 className="text-lg font-semibold text-gray-800 flex items-center">
-            <span className="bg-blue-100 p-1.5 rounded-lg mr-2">
-              <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-              </svg>
-            </span>
-            Ratings
-          </h4>
+      </div>
 
-          <div className="mt-4">
-            <div className="flex items-center">
-              <div className="text-3xl font-bold text-blue-600">{ratings.average}</div>
+      <div className="border-t border-gray-100">
+        <h4 className="text-lg font-semibold text-gray-800">Ratings</h4>
+        {loading ? (
+          <Loading></Loading>
+        ) : (
+          <>
+            {/* Display average rating */}
+            <div className="flex items-center mt-4">
+              <div className="text-3xl font-bold text-blue-600">{ratings?.avgRating ?? 0}</div>
               <div className="flex text-yellow-400 ml-3 text-xl">
-                {[...Array(Math.floor(ratings.average))].map((_, i) => (
-                  <span key={i}>★</span>
-                ))}
-                {ratings.average % 1 !== 0 && <span>★</span>}
-                {[...Array(5 - Math.ceil(ratings.average))].map((_, i) => (
-                  <span key={i} className="text-gray-300">★</span>
+                {(() => {
+                  const avg = ratings?.avgRating ?? 0;
+                  let roundedStars = 1;
+
+                  if (avg >= 4.5) roundedStars = 5;
+                  else if (avg >= 3.5) roundedStars = 4;
+                  else if (avg >= 2.5) roundedStars = 3;
+                  else if (avg >= 1.5) roundedStars = 2;
+                  else if (avg == 0) roundedStars = 0;
+
+                  return [...Array(5)].map((_, i) => (
+                    <span key={i}>{i < roundedStars ? '★' : '☆'}</span>
+                  ));
+                })()}
+              </div>
+              <span className="text-sm text-gray-600 ml-2">({ratings?.totalRatings ?? 0})</span>
+            </div>
+
+            {/* Submit rating form */}
+            <form className="mt-4" onSubmit={handleSubmit}>
+              <div className="flex gap-1 text-yellow-500 text-2xl cursor-pointer">
+                {[...Array(5)].map((_, i) => (
+                  <span
+                    key={i}
+                    onClick={() => handleStarClick(i + 1)}
+                    className={i < newRating ? 'text-yellow-500' : 'text-gray-300'}
+                  >
+                    ★
+                  </span>
                 ))}
               </div>
-              <span className="text-sm text-gray-600 ml-2">({ratings.count})</span>
-            </div>
 
-            {/* Rating Breakdown */}
-            <div className="space-y-2 mt-4">
-              {ratings.breakdown.map((rating, index) => (
-                <div key={index} className="flex items-center gap-2 text-sm">
-                  <span className="w-4 text-gray-600">{rating.label}</span>
-                  <div className="bg-gray-200 w-full h-2 rounded-full flex-1">
-                    <div
-                      className="bg-blue-500 h-2 rounded-full"
-                      style={{ width: rating.percentage }}
-                    />
-                  </div>
-                  <span className="text-gray-600 w-10 text-right">{rating.value}</span>
+              <textarea
+                className="w-full p-2 mt-2 border rounded-md"
+                placeholder="Write a review..."
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+              />
+
+              <button
+                type="submit"
+                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              >
+                Submit Review
+              </button>
+            </form>
+
+            {/* Student Ratings Section with Show More */}
+            {ratings?.ratings?.length ? (
+              <div className="mt-8">
+                <h4 className="text-lg font-semibold text-gray-800 mb-4">Student Reviews</h4>
+                <div className="space-y-4">
+                  {(showAll ? ratings.ratings : ratings.ratings.slice(0, 3)).map((r, index) => (
+                    <div key={index} className="p-4 border rounded-lg shadow-sm">
+                      <div className="flex items-center space-x-3">
+                        <img
+                          src={r.student?.photoURL || '/noProfile.png'}
+                          alt="Student Profile"
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                        <div>
+                          <p className="font-medium text-gray-800">{r.student?.displayName}</p>
+                          <div className="flex text-yellow-500 text-lg">
+                            {[...Array(5)].map((_, i) => (
+                              <span key={i}>{i < r.rating ? '★' : '☆'}</span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      {r.review && <p className="mt-2 text-gray-700">{r.review}</p>}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
+                {ratings.ratings.length > 3 && (
+                  <button
+                    onClick={() => setShowAll(!showAll)}
+                    className="mt-4 text-blue-500 hover:underline"
+                  >
+                    {showAll ? 'See Less' : 'See More'}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <p className="mt-4 text-gray-500">No reviews yet.</p>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

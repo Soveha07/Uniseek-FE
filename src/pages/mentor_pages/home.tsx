@@ -133,12 +133,12 @@ const MentorHome = () => {
         {
             name: "Student's Name",
             selector: (row: MentorBooking) => row.student.displayName,
-            sortable: true,
+            sortable: false,
         },
         {
             name: "Day",
             selector: (row: MentorBooking) => row.day,
-            sortable: true,
+            sortable: false,
         },
         {
             name: "Time",
@@ -159,6 +159,7 @@ const MentorHome = () => {
                 </div>
             ),
             sortable: true,
+            width: "30rem"
         },
     ];
 
@@ -168,7 +169,7 @@ const MentorHome = () => {
     return (
         <div className="mx-auto p-8">
             <h2 className="text-2xl font-bold mb-4">Bookings</h2>
-            <div className="rounded-lg shadow-lg bg-gray-200 p-4">
+            <div className="rounded-lg shadow-2xl border border-gray-200 p-4">
                 <DataTable
                     columns={columns}
                     data={bookings}
@@ -180,7 +181,6 @@ const MentorHome = () => {
                             style: {
                                 fontWeight: "bold",
                                 fontSize: "18px",
-                                backgroundColor: "#f3f4f6",
                                 padding: "12px",
                             },
                         },

@@ -79,7 +79,7 @@ const MentorDetail: React.FC = () => {
     profileImage: mentorData.profileUrl || sampleData.profileImage,
     university: mentorData.university?.name || sampleData.university,
     title: mentorData.major?.name || sampleData.title,
-    bio: [mentorData.description || sampleData.bio[0], ...sampleData.bio.slice(1)],
+    bio: [mentorData.description],
     rating: sampleData.rating,
     reviewCount: sampleData.reviewCount,
     ratings: sampleData.ratings
@@ -97,6 +97,7 @@ const MentorDetail: React.FC = () => {
         reviewCount={data.reviewCount}
         university={data.university}
         title={data.title}
+        mentorId={mentorId}
       />
 
       <div className="container mx-auto px-4 py-8">
@@ -104,7 +105,8 @@ const MentorDetail: React.FC = () => {
           <div className="bg-white rounded-xl shadow-md p-6">
             <MentorAboutSection
               bio={data.bio}
-              ratings={data.ratings}
+              mentorId={mentorId}
+            // ratings={data.ratings}
             />
           </div>
           <div>
