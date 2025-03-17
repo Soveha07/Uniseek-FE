@@ -29,6 +29,7 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
   // const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
+  const studentId = localStorage.getItem('userID');
 
   useEffect(() => {
     const fetchSchedule = async () => {
@@ -84,12 +85,18 @@ const MentorScheduleContainer: React.FC<MentorScheduleContainerProps> = ({
       return;
     }
 
+    if (!studentId) {
+      setError("Please login to book the mentor");
+      setShowErrorModal(true);
+    }
     setBookingLoading(true);
     try {
       // These are the values being passed
-      await bookMentor(mentorId, selectedDay, selectedTime);
+      const response = await bookMentor(mentorId, selectedDay, selectedTime);
       // alert(`Session booked successfully for ${selectedDay} at ${selectedTime}`);
-      onSuccess(`Session successfully booked for ${selectedDay} at ${formatTime(selectedTime)}`);
+      if (response) {
+        onSuccess(`Session successfully booked for ${selectedDay} at ${formatTime(selectedTime)}`);
+      }
     } catch (error: any) {
       console.error('Booking error:', error);
       setError(error.message);
