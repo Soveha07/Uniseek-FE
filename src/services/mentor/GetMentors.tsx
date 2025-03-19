@@ -45,7 +45,6 @@ const processMentorsArray = (
     university: mentor.university?.name || mentor.universityName || mentor.university || '',
     majorName: mentor.major?.name || mentor.majorName || '',
     major: mentor.major?.name || mentor.majorName || mentor.major || '',
-    profileUrl: mentor.profile_url || mentor.profileUrl || '',
     imageUrl: mentor.profile_url || mentor.profileUrl || mentor.imageUrl || '',
     description: mentor.description || '',
     email: mentor.email || '',
