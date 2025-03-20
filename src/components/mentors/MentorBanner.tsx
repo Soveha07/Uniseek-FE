@@ -22,7 +22,7 @@ const MentorHeroBanner: React.FC<MentorHeroBannerProps> = ({ profileImage }) => 
 
           <img
             src={profileImage
-              ? `${process.env.PUBLIC_URL}/mentor/${profileImage}`
+              ? `${profileImage}`
               : `${process.env.PUBLIC_URL}/noProfile.png`}
             className="relative w-28 h-28 md:w-32 md:h-32 rounded-full object-contain border-4 border-white shadow-lg"
             onError={(e) => {

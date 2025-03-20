@@ -25,7 +25,7 @@ const MentorCard: React.FC<MentorCardProps> = ({ id, name, university, major, im
       <img
         src={imageUrl || `${process.env.PUBLIC_URL}/mentor/noImage.jpg`}
         alt={name}
-        className="w-full h-40 object-cover rounded-md"
+        className="w-full h-52 object-cover rounded-md"
         onError={(e) => {
           (e.target as HTMLImageElement).src = `${process.env.PUBLIC_URL}/university/noImage.jpg`;
         }}

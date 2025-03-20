@@ -134,7 +134,7 @@ const Home: React.FC = () => {
             alt="university"
           />
           <SmallBox
-            title="Meet university representatives in person"
+            title="Meet university students for mentoring"
             description="Create connections directly with the senior."
             buttonText="Find Your Mentor"
             onClick={() => navigate("/mentors")}
