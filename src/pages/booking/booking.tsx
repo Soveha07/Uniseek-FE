@@ -75,25 +75,27 @@ const BookingsPage = () => {
                         <Card key={booking.id}>
                             <h2 className="text-lg font-semibold">Mentor: {booking.mentor.fullName}</h2>
                             <p className="text-sm text-gray-600">{booking.mentor.major.name}, {booking.mentor.university.name}</p>
-                            {booking.mentor.phoneNumber && (
+                            {/* {booking.mentor.phoneNumber && (
                                 <p className="text-sm text-gray-600 mt-1">Phone Number: {booking.mentor.phoneNumber}</p>
-                            )}
+                            )} */}
                             <p className="mt-2"><strong>Day:</strong> {booking.day}</p>
                             <p><strong>Time:</strong> {formatTime(booking.time)}</p>
                             <p><strong>Booked At:</strong> {formatDateTime(booking.bookedAt)}</p>
                             <p className={`mt-2 font-semibold ${statusColors[booking.status]}`}>
                                 {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                             </p>
-                            <div className="mt-4 flex gap-2">
-                                <a href={`mailto:${booking.mentor.email}`} target="_blank">
-                                    <Button>Email</Button>
-                                </a>
-                                {booking.mentor.telegramLink && (
-                                    <a href={booking.mentor.telegramLink} target="_blank">
-                                        <Button variant="secondary">Telegram</Button>
+                            {/* {booking.status === "ongoing" && (
+                                <div className="mt-4 flex gap-2">
+                                    <a href={`mailto:${booking.mentor.email}`} target="_blank">
+                                        <Button>Email</Button>
                                     </a>
-                                )}
-                            </div>
+                                    {booking.mentor.telegramLink && (
+                                        <a href={booking.mentor.telegramLink} target="_blank">
+                                            <Button variant="secondary">Telegram</Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )} */}
                         </Card>
                     ))}
                 </div>

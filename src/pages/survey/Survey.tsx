@@ -102,7 +102,7 @@ const Survey: React.FC = () => {
         setTimeout(() => {
           console.log("Navigating with universities:", response);
           navigate('/uniRecommendation', { state: { universities: response } });
-        }, 5000); // 2-second delay to allow modal to display
+        }, 2000); // 2-second delay to allow modal to display
       } catch (error) {
         alert('Failed to submit survey. Please try again.');
         console.log(error);
