@@ -187,7 +187,7 @@ const Home: React.FC = () => {
           onClick={() => navigate("/blog")}
         />
         <Box
-          title="University Ranking by Subject 2025"
+          title="University Ranking by Subject"
           description="Discover the top-performing universities in Cambodia"
           imgPath="/homepage/major.jpg"
           buttonText="Explore"

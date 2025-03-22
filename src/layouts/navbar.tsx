@@ -57,7 +57,7 @@ const NavBar: React.FC = () => {
                   <li key={index} className="md:relative">
                     <Link
                       to={path}
-                      className="block py-2 px-4 text-gray-900 rounded-sm transition-colors duration-200 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-300 dark:hover:text-white"
+                      className="block py-2 px-4 text-gray-900 rounded-sm transition-colors duration-200 hover:bg-gray-200"
                     >
                       {name}
                     </Link>

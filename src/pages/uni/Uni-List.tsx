@@ -92,13 +92,13 @@ const UniversityList: React.FC = () => {
                     </h2>
 
                     <div className="flex flex-row items-center justify-between w-full px-6 gap-2 md:px-4 md:mb-6">
-                        <div className="flex items-center gap-2">
-                            <label className="text-b2 font-medium md:text-lg">School Type:</label>
+                        <div className="flex items-center gap-2 ml-6">
+                            <label className="text-b2 font-bold md:text-lg">School Type:</label>
                             <div className="flex gap-2">
                                 {["Public", "Private"].map((type) => (
                                     <button
                                         key={type}
-                                        className={`px-4 py-1 md:px-6 md:py-2 rounded-full text-white font-semibold shadow-md transition ${selectedSchool === type ? "bg-blue-600" : "bg-blue-500"
+                                        className={`px-4 py-1 md:px-6 md:py-2 rounded-full text-white font-semibold shadow-md transition ${selectedSchool === type ? "bg-blue-600" : "bg-blue-300"
                                             }`}
                                         onClick={() => {
                                             setSelectedSchool(selectedSchool === type ? null : type);
@@ -135,10 +135,9 @@ const UniversityList: React.FC = () => {
                                     universities={paginatedUniversities}
                                     view="desktop"
                                 />
-                            </div>
+                            </div>x
                         </>
                     )}
-
                     {/* Pagination */}
                     {!loading && !error && (
                         <div className="mt-4 mb-6 flex justify-center">
