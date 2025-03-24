@@ -7,6 +7,7 @@ import { formatTime } from '../../helpers/timeFormat';
 import { formatDateTime } from '../../helpers/dateTimeFormat';
 import { Booking } from '../../interfaces/booking.interface';
 import ErrorModal from '../../components/common/ErrorModal';
+import { useNavigate } from 'react-router-dom';
 
 // interface Booking {
 //     id: number;
@@ -38,6 +39,7 @@ const BookingsPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
     const studentId = localStorage.getItem('userID');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getBookings = async () => {
@@ -60,6 +62,14 @@ const BookingsPage = () => {
         getBookings();
     }, [studentId]);
 
+    // const handleDetailClick = () => {
+    //     if (id) {
+    //         navigate(`/mentors/detail/${id}`);
+    //     } else {
+    //         navigate(`/mentors/detail`);
+    //     }
+    // };
+
     if (loading) return <Loading></Loading>;
 
     // if (error) return <p className="text-center text-red-500">{error}</p>;
@@ -73,7 +83,7 @@ const BookingsPage = () => {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {bookings.map((booking) => (
                         <Card key={booking.id}>
-                            <h2 className="text-lg font-semibold">Mentor: {booking.mentor.fullName}</h2>
+                            <h2 className="text-lg font-semibold" onClick={() => navigate(`/mentors/detail/${booking.mentor.id}`)}>Mentor: {booking.mentor.fullName}</h2>
                             <p className="text-sm text-gray-600">{booking.mentor.major.name}, {booking.mentor.university.name}</p>
                             {/* {booking.mentor.phoneNumber && (
                                 <p className="text-sm text-gray-600 mt-1">Phone Number: {booking.mentor.phoneNumber}</p>

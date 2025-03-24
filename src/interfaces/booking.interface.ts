@@ -9,6 +9,7 @@ interface University {
 }
 
 interface Mentor {
+    id: number;
     fullName: string;
     description: string;
     profileUrl: string | null;
