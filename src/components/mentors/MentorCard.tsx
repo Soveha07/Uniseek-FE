@@ -30,14 +30,14 @@ const MentorCard: React.FC<MentorCardProps> = ({ id, name, university, major, im
           (e.target as HTMLImageElement).src = `${process.env.PUBLIC_URL}/university/noImage.jpg`;
         }}
       />
-      <div className="mt-3 mb-3">
+      <div className="mt-3 mb-3 h-32">
         <h3 className="text-lg font-bold text-gray-900">{name}</h3>
         <p className="text-sm text-gray-500">{university}</p>
         <p className="text-sm text-gray-700 mt-2">Major: {major}</p>
       </div>
 
       {/* Detail button */}
-      <div className="absolute bottom-[-14px] right-4">
+      <div className="absolute bottom-[-14px] right-0">
         <button
           onClick={handleDetailClick}
           className="bg-blue-600 text-white text-sm font-semibold px-5 py-2 rounded-full shadow-md hover:bg-blue-700 transition"
