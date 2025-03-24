@@ -57,13 +57,13 @@ const UniversityCard: React.FC<UniversityCardProps> = ({
         </ul>
       </div>
 
-      <div className="absolute bottom-[-14px] right-4">
+      <div className="absolute bottom-[-14px] right-1">
         <button
           onClick={handleDetailClick}
           className="bg-blue-600 text-white text-sm font-semibold px-5 py-2 rounded-full shadow-md hover:bg-blue-700 transition"
         >
           Detail
-        </button>
+        </button> 
       </div>
     </div>
   );
@@ -86,7 +86,7 @@ export const UniversityCardDesktop: React.FC<UniversityCardProps> = ({
 
 
   return (
-    <div className="relative bg-gray-100 rounded-lg shadow-md p-4 mb-10 w-full h-[420px]">
+    <div className="relative bg-gray-100 rounded-lg shadow-md p-4 mb-10 w-full h-[400px]">
       <div className="w-full h-40 rounded-lg overflow-hidden">
         <img
           src={`${process.env.PUBLIC_URL}/university/${imageUrl || 'noImage.jpg'}`}
@@ -115,7 +115,7 @@ export const UniversityCardDesktop: React.FC<UniversityCardProps> = ({
 
       </div>
 
-      <div className="absolute bottom-[-14px] right-4">
+      <div className="absolute bottom-[-14px] right-0">
         <button
           onClick={handleDetailClick}
           className="bg-blue-600 text-white text-sm font-semibold px-5 py-2 rounded-full shadow-md hover:bg-blue-700 transition"
